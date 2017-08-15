@@ -1,3 +1,4 @@
+
 import React from 'react';
 import BigCalendar from 'react-big-calendar';
 import moment from 'moment';
@@ -86,6 +87,7 @@ class BigCalBasic extends React.Component{
           onSelectSlot={(slotInfo) =>
             this.setState({displayPickDateModal: !this.state.displayPickDateModal, selectedDate: slotInfo.start.toLocaleString().split(',')[0]})
           }
+          onSelectEvent={event => console.log('event is', event.summary)}
         />
         {this.state.displayPickDateModal ? <CreateDateModal
           closeModal={this.closeModal.bind(this)}
