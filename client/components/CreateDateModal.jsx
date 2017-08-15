@@ -1,6 +1,6 @@
 import React from 'react';
 import Modal from 'react-modal';
-import AddEvent from './AddEvent.jsx';
+import AddEventModal from './AddEventModal.jsx';
 // Modal styling
 const customStyles = {
   content : {
@@ -18,7 +18,7 @@ const customStyles = {
   }
 };
 
-class FreeTimeSlotsModal extends React.Component {
+class CreateDateModal extends React.Component {
   constructor() {
     super();
 
@@ -57,14 +57,18 @@ class FreeTimeSlotsModal extends React.Component {
         >
 
           <h2 className="modalTitle">Schedule A Date</h2>
-          <AddEvent />
-          {
-            console.log(this.props)
-          }
+          <AddEventModal
+            user={this.props.user}
+            updateSlotsAndEventInfo={this.props.updateSlotsAndEventInfo}
+            selectedContacts={this.props.selectedContacts}
+            selectedGroups={this.props.selectedGroups}
+            date={this.props.selectedDate}
+            style={this.customStyles}
+          />
         </Modal>
       </div>
     );
   }
 }
 
-export default FreeTimeSlotsModal;
+export default CreateDateModal;
