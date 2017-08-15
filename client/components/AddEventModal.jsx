@@ -1,21 +1,14 @@
 import React from 'react';
 import moment from 'moment';
 
-import { SingleDatePicker } from 'react-dates';
-
 import * as CalendarModel from '../models/calendar.js';
 import events from './events';
-import FreeTimeSlotsModal from './FreeTimeSlotsModal.jsx';
+import CreateDateModal from './CreateDateModal.jsx';
 import findFreeTimes from '../models/findFreeTimes.js';
 
-class AddEvent extends React.Component {
+class AddEventModal extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      date: ''
-    }
-    //binding functions here
-    //this.mergeContactsAndGroups = this.mergeContactsAndGroups.bind(this);
   }
 
   // check if contact already exists to prevent duplicates
@@ -30,38 +23,30 @@ class AddEvent extends React.Component {
   }
 
   handleEventSubmit(e) {
+    console.log(this.props)
     e.preventDefault();
 
-    // user inputs
-    var meetingLength = e.target.meetingLength.value // in minutes
+    var meetingLength = e.target.meetingLength.value
     var meetingTitle = e.target.title.value
-    var timeMin = moment(e.target.date.value, "MM/DD/YYYY");
+    var timeMin = moment(this.props.date, "MM/DD/YYYY");
 
     var queryInfo = {
       timeMin: timeMin.toISOString(),
-      timeMax: timeMin.add('1', 'days').toISOString() // add a day so we can query from midnight of current day to midnight of following day
+      timeMax: timeMin.add('1', 'days').toISOString()
     };
 
     // put selected contacts and selected contacts from groups into same array
     var allContacts = this.props.selectedContacts.slice();
     this.props.selectedGroups.forEach((group)=> {
-      // console.log('group: ', group)
+      console.log('group: ', group)
       group.contacts.forEach((contact) => {
         if (!this.checkExist(allContacts, contact)) {
-          // console.log('Contact: ', allContacts)
+          console.log('Contact: ', allContacts)
           allContacts.push(contact);
         }
       })
     })
 
-
-    //================
-    //================ Need to wrap the below call in recursive check for success.
-    //                  if response is 401, make call to reauth and then try again
-    //                  needs counter to make sure no infinite loop
-    //                  https://github.com/fiznool/passport-oauth2-refresh/issues/1
-
-    // call freebusy method to get back busy times
     CalendarModel.freeBusy(allContacts, this.props.user.user, queryInfo.timeMin, queryInfo.timeMax, (calendars) => {
       // receives back calendars array with each element being an object with a email address as its only property
       // each property has a value that is an object with a busy property
@@ -80,7 +65,6 @@ class AddEvent extends React.Component {
         <form onSubmit={this.handleEventSubmit.bind(this)}>
           <input type="text" name="title" placeholder="Meeting Title"></input>
           <input type="text" name="meetingLength" placeholder="Meeting Length (min)"></input>
-          <input type="text" name="date" placeholder="MM/DD/YYYY"></input>
           <button className="createEventButton">Create event</button>
         </form>
       </div>
@@ -89,4 +73,4 @@ class AddEvent extends React.Component {
   }
 }
 
-export default AddEvent;
+export default AddEventModal;
