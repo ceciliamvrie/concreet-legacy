@@ -3,6 +3,7 @@ import BigCalendar from 'react-big-calendar';
 import moment from 'moment';
 import * as CalendarModel from '../models/calendar.js';
 import FreeTimeSlotsModal from './FreeTimeSlotsModal.jsx';
+import CreateDateModal from './CreateDateModal.jsx';
 import findFreeTimes from '../models/findFreeTimes.js';
 import AddEvent from './AddEvent.jsx';
 
@@ -19,6 +20,7 @@ class BigCalBasic extends React.Component{
       events: [],
       availableSlots: [],
       displayModal: false,
+      displayPickDateModal: false,
       selectedDate: undefined,
       eventDateTime: undefined,
       eventTitle: '',
@@ -86,13 +88,28 @@ class BigCalBasic extends React.Component{
 
         <br/>
         <BigCalendar
+          selectable
           {...this.props}
           popup
           events={this.state.events}
           views={allViews}
           titleAccessor='summary'
           defaultDate={new Date()}
+          onSelectSlot={(slotInfo) =>
+            this.setState({displayPickDateModal: !this.state.displayPickDateModal, selectedDate: slotInfo.start.toLocaleString().split(',')[0]})
+          }
         />
+        {this.state.displayPickDateModal && <CreateDateModal
+        user={this.props.user}
+        availableSlots={this.state.availableSlots}
+        selectedDate={this.state.selectedDate}
+        getEventDateTime={this.getEventDateTime.bind(this)}
+        eventTitle={this.state.eventTitle}
+        selectedContacts={this.props.selectedContacts}
+        selectedGroups={this.props.selectedGroups}
+        meetingLength={this.state.meetingLength}
+        renderEventsToCalendar = {this.renderEventsToCalendar.bind(this)}
+        />}
         {this.state.displayModal && <FreeTimeSlotsModal
           user={this.props.user}
           availableSlots={this.state.availableSlots}
