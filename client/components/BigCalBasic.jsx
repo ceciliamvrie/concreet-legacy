@@ -30,24 +30,7 @@ class BigCalBasic extends React.Component{
     this.renderEventsToCalendar();
   }
 
-
-
-
-  // componentWillMount() {
-  //   // CalendarModel.getCalendarList(this.props.user.user, (currentUser, calendarList) => {
-  //     var calendarList = [];
-  //     CalendarModel.getCalendarEvents(this.props.user.user, calendarList, (eventsList) => {
-  //       CalendarModel.processEvents(eventsList, (processedEvents) => {
-  //         this.setState({
-  //           events: processedEvents,
-  //         })
-  //       })
-  //     })
-  //   // });
-  // }
-
   renderEventsToCalendar() {
-    // CalendarModel.getCalendarList(this.props.user.user, (currentUser, calendarList) => {
     var calendarList = [];
       CalendarModel.getCalendarEvents(this.props.user.user, calendarList, (eventsList) => {
         CalendarModel.processEvents(eventsList, (processedEvents) => {
@@ -56,7 +39,6 @@ class BigCalBasic extends React.Component{
           })
         })
       })
-    // });
   }
 
   updateSlotsAndEventInfo(freeSlots, eventDate, eventTitle, eventLength) {
@@ -100,15 +82,16 @@ class BigCalBasic extends React.Component{
           }
         />
         {this.state.displayPickDateModal && <CreateDateModal
-        user={this.props.user}
-        availableSlots={this.state.availableSlots}
-        selectedDate={this.state.selectedDate}
-        getEventDateTime={this.getEventDateTime.bind(this)}
-        eventTitle={this.state.eventTitle}
-        selectedContacts={this.props.selectedContacts}
-        selectedGroups={this.props.selectedGroups}
-        meetingLength={this.state.meetingLength}
-        renderEventsToCalendar = {this.renderEventsToCalendar.bind(this)}
+          updateSlotsAndEventInfo={this.updateSlotsAndEventInfo.bind(this)}
+          user={this.props.user}
+          availableSlots={this.state.availableSlots}
+          selectedDate={this.state.selectedDate}
+          getEventDateTime={this.getEventDateTime.bind(this)}
+          eventTitle={this.state.eventTitle}
+          selectedContacts={this.props.selectedContacts}
+          selectedGroups={this.props.selectedGroups}
+          meetingLength={this.state.meetingLength}
+          renderEventsToCalendar = {this.renderEventsToCalendar.bind(this)}
         />}
         {this.state.displayModal && <FreeTimeSlotsModal
           user={this.props.user}

@@ -35,7 +35,7 @@ class AddEvent extends React.Component {
     // user inputs
     var meetingLength = e.target.meetingLength.value // in minutes
     var meetingTitle = e.target.title.value
-    var timeMin = moment(this.props.date, "MM/DD/YYYY");
+    var timeMin = moment(e.target.date.value, "MM/DD/YYYY");
 
     var queryInfo = {
       timeMin: timeMin.toISOString(),
