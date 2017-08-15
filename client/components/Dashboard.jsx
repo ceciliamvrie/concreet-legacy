@@ -138,13 +138,13 @@ class Dashboard extends React.Component {
 
   handleAddGroup(groupname) {
 
-    UserModel.addGroup(groupname, this.props.user.user, (sucess)=> { 
+    UserModel.addGroup(groupname, this.props.user.user, (sucess)=> {
       this.resetGroup();
     })
   }
 
   handleAddContact(gmail) {
-    
+
     let checkdup = false;
     this.state.allContacts.forEach((contact) => {
       if (gmail === contact.emailAddress) {
@@ -157,7 +157,7 @@ class Dashboard extends React.Component {
       checkgmail = true;
     }
 
-    if (!checkdup && !checkgmail) {     
+    if (!checkdup && !checkgmail) {
 
       UserModel.addContact(gmail, (contact) => {
         UserModel.addContactToGroup(this.state.contact, contact, ()=>{

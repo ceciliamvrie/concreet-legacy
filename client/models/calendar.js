@@ -224,7 +224,7 @@ export const addEvent = (queryGroup, currentUser, title, timeStart, timeEnd, cal
     "start": start,
     "end": end,
     "reminders": {
-      "useDefault": true,
+      "useDefault": true
     },
     "summary": title
   };
