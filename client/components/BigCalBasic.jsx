@@ -58,6 +58,12 @@ class BigCalBasic extends React.Component{
     })
   }
 
+  closeModal() {
+    this.setState({
+      displayPickDateModal: !this.state.displayPickDateModal
+    })
+  }
+
   render(){
     return (
       <div className="calendar">
@@ -81,7 +87,8 @@ class BigCalBasic extends React.Component{
             this.setState({displayPickDateModal: !this.state.displayPickDateModal, selectedDate: slotInfo.start.toLocaleString().split(',')[0]})
           }
         />
-        {this.state.displayPickDateModal && <CreateDateModal
+        {this.state.displayPickDateModal ? <CreateDateModal
+          closeModal={this.closeModal.bind(this)}
           updateSlotsAndEventInfo={this.updateSlotsAndEventInfo.bind(this)}
           user={this.props.user}
           availableSlots={this.state.availableSlots}
@@ -92,7 +99,7 @@ class BigCalBasic extends React.Component{
           selectedGroups={this.props.selectedGroups}
           meetingLength={this.state.meetingLength}
           renderEventsToCalendar = {this.renderEventsToCalendar.bind(this)}
-        />}
+        /> : null}
         {this.state.displayModal && <FreeTimeSlotsModal
           user={this.props.user}
           availableSlots={this.state.availableSlots}
