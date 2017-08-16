@@ -138,13 +138,13 @@ class Dashboard extends React.Component {
 
   handleAddGroup(groupname) {
 
-    UserModel.addGroup(groupname, this.props.user.user, (sucess)=> { 
+    UserModel.addGroup(groupname, this.props.user.user, (sucess)=> {
       this.resetGroup();
     })
   }
 
   handleAddContact(gmail) {
-    
+
     let checkdup = false;
     this.state.allContacts.forEach((contact) => {
       if (gmail === contact.emailAddress) {
@@ -157,7 +157,7 @@ class Dashboard extends React.Component {
       checkgmail = true;
     }
 
-    if (!checkdup && !checkgmail) {     
+    if (!checkdup && !checkgmail) {
 
       UserModel.addContact(gmail, (contact) => {
         UserModel.addContactToGroup(this.state.contact, contact, ()=>{
@@ -198,7 +198,7 @@ class Dashboard extends React.Component {
       <div className="dashboard">
         <h1 className="title">Concreet</h1>
         <SidePanel contacts={this.state.allContacts} groups={this.state.allGroups} selectContact={this.handleSelectedContacts} selectGroup={this.handleSelectedGroup} addGroup={this.handleAddGroup} addContact={this.handleAddContact} updateGroup={this.handleUpdateGroup} removeContactFromGroup={this.removeContactFromGroup} selectedContacts={this.state.selectedContacts} resetSide={this.resetGroup.bind(this)} contactGroup={this.state.contact} clearSelectedContacts={this.clearSelectedContacts}/>
-        <BigCalBasic user={this.props.user} selectedGroups={this.state.selectedGroup} selectedContacts={this.state.selectedContacts}/>
+        <BigCalBasic handleFinish={this.props.handleFinish} handleCreateClick={this.props.handleCreateClick} user={this.props.user} selectedGroups={this.state.selectedGroup} selectedContacts={this.state.selectedContacts}/>
 
       </div>
 

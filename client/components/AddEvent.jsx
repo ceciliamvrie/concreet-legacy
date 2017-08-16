@@ -31,6 +31,9 @@ class AddEvent extends React.Component {
 
   handleEventSubmit(e) {
     e.preventDefault();
+    this.props.handleCreateClick()
+    this.props.handleFinish()
+
 
     // user inputs
     var meetingLength = e.target.meetingLength.value // in minutes

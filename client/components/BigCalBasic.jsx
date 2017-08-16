@@ -68,6 +68,8 @@ class BigCalBasic extends React.Component{
     return (
       <div className="calendar">
         <AddEvent
+          handleFinish={this.props.handleFinish}
+          handleCreateClick={this.props.handleCreateClick}
           user={this.props.user}
           updateSlotsAndEventInfo={this.updateSlotsAndEventInfo.bind(this)}
           selectedContacts={this.props.selectedContacts}

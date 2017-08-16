@@ -9,6 +9,10 @@ import findFreeTimes from '../models/findFreeTimes.js';
 class AddEventModal extends React.Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      topCreateSelected: false
+    }
   }
 
   // check if contact already exists to prevent duplicates
@@ -28,7 +32,8 @@ class AddEventModal extends React.Component {
 
     var meetingLength = e.target.meetingLength.value
     var meetingTitle = e.target.title.value
-    var timeMin = moment(this.props.date, "MM/DD/YYYY");
+    var selectedTime = this.state.topCreateSelected ? e.target.title.value : this.props.date
+    var timeMin = moment(selectedTime, "MM/DD/YYYY");
 
     var queryInfo = {
       timeMin: timeMin.toISOString(),
@@ -65,6 +70,9 @@ class AddEventModal extends React.Component {
         <form onSubmit={this.handleEventSubmit.bind(this)}>
           <input type="text" name="title" placeholder="Meeting Title"></input>
           <input type="text" name="meetingLength" placeholder="Meeting Length (min)"></input>
+          {
+            this.state.topCreateSelected ? <input type="text" name="date" placeholder="MM/DD/YYYY"></input> : null
+          }
           <button className="createEventButton">Create event</button>
         </form>
       </div>
