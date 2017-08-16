@@ -36,6 +36,7 @@ class CreateDateModal extends React.Component {
   //   this.setState({modalIsOpen: true});
   // }
 
+
   afterOpenModal() {
     // references are now sync'd and can be accessed.
     // this.subtitle.style.color = '#f00';
@@ -55,6 +56,7 @@ class CreateDateModal extends React.Component {
           isOpen={this.state.modalIsOpen}
           onAfterOpen={this.afterOpenModal}
           onRequestClose={this.closeModal}
+          onSubmit={this.closeModal}
           style={customStyles}
           contentLabel="Time Slots Modal"
         >
