@@ -33,15 +33,18 @@ class FreeTimeSlotsModal extends React.Component {
   }
 
   openModal() {
+    console.log('openModal')
     this.setState({modalIsOpen: true});
   }
 
   afterOpenModal() {
     // references are now sync'd and can be accessed.
-    this.subtitle.style.color = '#f00';
+    // this.subtitle.style.color = '#f00';
   }
 
   closeModal() {
+    console.log('closeModal')
+    this.props.closeDisplayModal()
     this.setState({modalIsOpen: false});
   }
 

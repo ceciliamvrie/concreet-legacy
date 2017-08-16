@@ -9,6 +9,10 @@ import findFreeTimes from '../models/findFreeTimes.js';
 class AddEventModal extends React.Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      topCreateSelected: false
+    }
   }
 
   // check if contact already exists to prevent duplicates
@@ -27,26 +31,26 @@ class AddEventModal extends React.Component {
 
     var meetingLength = e.target.meetingLength.value
     var meetingTitle = e.target.title.value
+    var selectedTime = this.state.topCreateSelected ? e.target.title.value : this.props.date
     var timeMin = moment(this.props.date, "MM/DD/YYYY");
-
     var queryInfo = {
       timeMin: timeMin.toISOString(),
       timeMax: timeMin.add('1', 'days').toISOString()
     };
-
     // put selected contacts and selected contacts from groups into same array
     var allContacts = this.props.selectedContacts.slice();
     this.props.selectedGroups.forEach((group)=> {
-      console.log('group: ', group)
+      // console.log('group: ', group)
       group.contacts.forEach((contact) => {
         if (!this.checkExist(allContacts, contact)) {
-          console.log('Contact: ', allContacts)
+          // console.log('Contact: ', allContacts)
           allContacts.push(contact);
         }
       })
     })
 
     CalendarModel.freeBusy(allContacts, this.props.user.user, queryInfo.timeMin, queryInfo.timeMax, (calendars) => {
+      console.log(queryInfo.timeMin, queryInfo.timeMax)
       // receives back calendars array with each element being an object with a email address as its only property
       // each property has a value that is an object with a busy property
       // value of busy property is an array of objects that include start and end property of busy times
@@ -64,6 +68,9 @@ class AddEventModal extends React.Component {
         <form onSubmit={this.handleEventSubmit.bind(this)}>
           <input type="text" name="title" placeholder="Meeting Title"></input>
           <input type="text" name="meetingLength" placeholder="Meeting Length (min)"></input>
+          {
+            this.state.topCreateSelected ? <input type="text" name="date" placeholder="MM/DD/YYYY"></input> : null
+          }
           <button className="createEventButton">Create event</button>
         </form>
       </div>

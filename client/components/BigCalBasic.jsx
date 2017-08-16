@@ -64,6 +64,7 @@ class BigCalBasic extends React.Component{
   }
 
   updateSlotsAndEventInfo(freeSlots, eventDate, eventTitle, eventLength) {
+    console.log('opening dates AAHHHH')
     this.setState({
       availableSlots: freeSlots,
       displayModal: true,
@@ -80,9 +81,16 @@ class BigCalBasic extends React.Component{
     })
   }
 
-  closeModal() {
+  closeDisplayModal() {
     this.setState({
-      displayPickDateModal: !this.state.displayPickDateModal
+      displayModal: !this.state.displayModal,
+    })
+  }
+
+  closeModal() {
+    console.log('inside closeModal')
+    this.setState({
+      displayPickDateModal: !this.state.displayPickDateModal,
     })
   }
 
@@ -96,6 +104,8 @@ class BigCalBasic extends React.Component{
     return (
       <div className="calendar">
         <AddEvent
+          handleFinish={this.props.handleFinish}
+          handleCreateClick={this.props.handleCreateClick}
           user={this.props.user}
           updateSlotsAndEventInfo={this.updateSlotsAndEventInfo.bind(this)}
           selectedContacts={this.props.selectedContacts}
@@ -139,6 +149,7 @@ class BigCalBasic extends React.Component{
 
         {this.state.displayModal && <FreeTimeSlotsModal
           user={this.props.user}
+          closeDisplayModal={this.closeDisplayModal.bind(this)}
           availableSlots={this.state.availableSlots}
           selectedDate={this.state.selectedDate}
           getEventDateTime={this.getEventDateTime.bind(this)}
@@ -147,9 +158,7 @@ class BigCalBasic extends React.Component{
           selectedGroups={this.props.selectedGroups}
           meetingLength={this.state.meetingLength}
           renderEventsToCalendar = {this.renderEventsToCalendar.bind(this)}
-        />
-         }
-
+                                      
         {this.state.displayViewModal && <ViewEventModal
           closeViewModal={this.closeViewModal.bind(this)}
           updateSlotsAndEventInfo={this.updateSlotsAndEventInfo.bind(this)}

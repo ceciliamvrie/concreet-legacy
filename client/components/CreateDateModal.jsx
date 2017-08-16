@@ -26,21 +26,23 @@ class CreateDateModal extends React.Component {
       modalIsOpen: true
     };
 
-    this.openModal = this.openModal.bind(this);
+    // this.openModal = this.openModal.bind(this);
     this.afterOpenModal = this.afterOpenModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
   }
 
-  openModal() {
-    this.setState({modalIsOpen: true});
-  }
+  // openModal() {
+  //   console.log('open in create date')
+  //   this.setState({modalIsOpen: true});
+  // }
 
   afterOpenModal() {
     // references are now sync'd and can be accessed.
-    this.subtitle.style.color = '#f00';
+    // this.subtitle.style.color = '#f00';
   }
 
   closeModal() {
+    console.log('close in create date')
     this.props.closeModal()
     this.setState({modalIsOpen: false});
   }

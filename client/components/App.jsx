@@ -8,10 +8,23 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      topCreateSelected: false,
       signedIn: false,
       user: {}
     }
   this.handleSignOut = this.handleSignOut.bind(this);
+  }
+
+  handleTopCreateClick() {
+    this.setState({
+      topCreateSelected: !this.state.topCreateSelected
+    })
+  }
+
+  handleTopCreateFinish() {
+    this.setState({
+      topCreateSelected: !this.state.topCreateSelected
+    })
   }
 
   componentWillMount() {
@@ -38,7 +51,7 @@ class App extends React.Component {
     return (
       <div className="app">
         { this.state.signedIn && <a className="signoutLink" onClick={this.handleSignOut}>Sign Out</a> }
-        { this.state.signedIn && <Dashboard user={this.state.user} /> }
+        { this.state.signedIn && <Dashboard handleFinish={this.handleTopCreateFinish.bind(this)} handleCreateClick={this.handleTopCreateClick.bind(this)} user={this.state.user} /> }
         { !this.state.signedIn && <SplashLogin/> }
       </div>
     );
@@ -46,5 +59,3 @@ class App extends React.Component {
 }
 
 export default App;
-
-
