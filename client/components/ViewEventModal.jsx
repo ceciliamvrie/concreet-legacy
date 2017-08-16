@@ -1,7 +1,10 @@
 import React from 'react';
 import Modal from 'react-modal';
+import InlineBlock from 'react-inline-block';
+import Columns from 'react-columns';
 import CreateEventModal from './CreateDateModal.jsx';
 import Iframe from 'react-iframe';
+import EditEvent from './EditEvent.jsx';
 
 // Modal styling
 const customStyles = {
@@ -13,7 +16,7 @@ const customStyles = {
     marginRight           : '-50%',
     transform             : 'translate(-50%, -50%)',
     maxHeight             : '425px', // This sets the max height
-    width                 : '500px',
+    width                 : '700px',
     overflow              : 'scroll', // This tells the modal to scroll
     border                : '1px solid black',
     //borderBottom          : '1px solid black', // for some reason the bottom border was being cut off, so made it a little thicker
@@ -26,7 +29,9 @@ class ViewEventModal extends React.Component {
     super();
 
     this.state = {
-      modalIsOpen: true
+      modalIsOpen: true,
+      toggleEdit: false
+
     };
 
     this.openModal = this.openModal.bind(this);
@@ -48,9 +53,16 @@ class ViewEventModal extends React.Component {
     this.setState({modalIsOpen: false});
   }
 
+  toggleEditEvent() {
+    console.log('toggled')
+    this.setState({
+      toggleEdit: !this.state.toggleEdit
+    })
+  }
+
   render() {
     return (
-      <div className="timeModal">
+      <div className="viewModal">
 
         <Modal
           isOpen={this.state.modalIsOpen}
@@ -59,18 +71,30 @@ class ViewEventModal extends React.Component {
           style={customStyles}
           contentLabel="Time Slots Modal"
         >
-          <button className="createEventButton"> Edit this event </button>
-          <h2 className="modalTitle">{this.props.eventPicked.summary}</h2>
-          <h3> Meeting date: {this.props.eventPicked.start
-              .toString().split(' ').slice(0, 4).join(' ')}
-          </h3>
-          <div>
-            {this.props.eventPicked.attendees.map(atnd =>
-              <h5>{atnd.email}: {atnd.responseStatus}</h5>
-            )}
-          </div>
 
-         <Iframe url="https://www.google.com/maps/embed/v1/place?key=AIzaSyCMOEDp5TLmM37tCpw9i-ERmpU2kqhEMJg&q=Space+Needle,Seattle+WA"
+        {!this.state.toggleEdit ?
+          <div>
+            <div className="modalTitle">
+              <button className="createEventButton" onClick={this.toggleEditEvent.bind(this)}> Edit </button>
+            </div>
+            <h2 className="modalTitle">{this.props.eventPicked.summary}</h2>
+
+            <h3 className="modalTitle"> When: {this.props.eventPicked.start
+              .toString().split(' ').slice(0, 4).join(' ')} 
+            </h3>
+
+   
+            <div>
+              <Columns columns="2">
+                {this.props.eventPicked.attendees.map(atnd => 
+                  <div id="attendee">
+                  {atnd.email}: <label style={{fontStyle: 'italic', fontSize: '14px'}}>{atnd.responseStatus}</label></div>
+                )}
+              </Columns>
+            </div>
+
+            <div className="modalTitle">
+              <Iframe url="https://www.google.com/maps/embed/v1/place?key=AIzaSyCMOEDp5TLmM37tCpw9i-ERmpU2kqhEMJg&q=Space+Needle,Seattle+WA"
                  width="485px"
                  height="350px"
                  display="initial"
@@ -78,7 +102,21 @@ class ViewEventModal extends React.Component {
                  async
                  defer
                  allowFullScreen/>
-      </Modal>
+             </div>
+          </div>: 
+
+          <EditEvent 
+          toggleEdit={this.toggleEditEvent.bind(this)}
+          closeModal={this.closeModal.bind(this)} 
+          eventPicked={this.props.eventPicked}
+          updateSlotsAndEventInfo={this.props.updateSlotsAndEventInfo}
+          />
+        }
+
+        {
+          console.log(this.props.selectedDate)
+        }
+        </Modal>
       </div>
     );
   }

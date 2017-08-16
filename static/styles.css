@@ -13,6 +13,11 @@ body {
     text-align: center;
 }
 
+.col-centered{
+    float: none;
+    margin: 0 auto;
+}
+
 .splash {
     background-color: rgba(44, 62, 80,1.0);
     font-family: 'Raleway', sans-serif;
@@ -190,6 +195,7 @@ body {
     font-family: 'Catamaran', sans-serif;
 }
 
+
 .addevent input {
     background-color: white;
     border: 1px solid black;
@@ -219,6 +225,13 @@ input:-webkit-autofill {
     display: inline-block;
     font-size: 14px;
     cursor: pointer; 
+}
+
+#attendee {
+  width: 325px; 
+  word-wrap:break-word;
+  font-style: bold;
+  font-size: 18px;
 }
 
 .ReactModal__Overlay {
