@@ -263,5 +263,5 @@ input:-webkit-autofill {
 
 #event-location-map {
   margin-top: 20px;
-  background: url("loading.gif") center center no-repeat;
+  background: url("loading.gif") center bottom no-repeat;
 }
