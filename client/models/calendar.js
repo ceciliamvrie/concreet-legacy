@@ -205,7 +205,7 @@ export const addEvent = (queryGroup, currentUser, title, timeStart, timeEnd, cal
   for (var member of queryGroup) {
     var attendee = {
       email: member.emailAddress,
-      responseStatus: 'accepted'
+      responseStatus: 'needsAction'
     };
     attendees.push(attendee);
   }
@@ -229,9 +229,13 @@ export const addEvent = (queryGroup, currentUser, title, timeStart, timeEnd, cal
     "summary": title
   };
 
+<<<<<<< HEAD
   let url = `https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events?sendNotifications=true`;
 
   makeAjaxCall('POST', url, accessToken, requestBody, (data) => {
+=======
+  makeAjaxCall('POST', `https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events?sendNotifications=true`, accessToken, requestBody, (data) => {
+>>>>>>> Send event notifications to event attendees
     callback(data)
   })
 
