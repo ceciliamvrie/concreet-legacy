@@ -28,7 +28,6 @@ class FreeTimeSlotsModal extends React.Component {
     };
 
     this.openModal = this.openModal.bind(this);
-    this.afterOpenModal = this.afterOpenModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
   }
 
@@ -37,14 +36,10 @@ class FreeTimeSlotsModal extends React.Component {
     this.setState({modalIsOpen: true});
   }
 
-  afterOpenModal() {
-    // references are now sync'd and can be accessed.
-    // this.subtitle.style.color = '#f00';
-  }
-
   closeModal() {
     console.log('closeModal')
     this.props.closeDisplayModal()
+    this.props.closeModal()
     this.setState({modalIsOpen: false});
   }
 
@@ -54,7 +49,6 @@ class FreeTimeSlotsModal extends React.Component {
 
         <Modal
           isOpen={this.state.modalIsOpen}
-          onAfterOpen={this.afterOpenModal}
           onRequestClose={this.closeModal}
           style={customStyles}
           contentLabel="Time Slots Modal"

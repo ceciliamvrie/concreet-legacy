@@ -148,6 +148,7 @@ class BigCalBasic extends React.Component{
         /> : null}
 
         {this.state.displayModal && <FreeTimeSlotsModal
+          closeModal={this.closeModal.bind(this)}
           user={this.props.user}
           closeDisplayModal={this.closeDisplayModal.bind(this)}
           availableSlots={this.state.availableSlots}

@@ -71,7 +71,7 @@ class AddEventModal extends React.Component {
           {
             this.state.topCreateSelected ? <input type="text" name="date" placeholder="MM/DD/YYYY"></input> : null
           }
-          <button className="createEventButton">Create event</button>
+          <button className="createEventButton" onClick={this.props.close}>Create event</button>
         </form>
       </div>
 
