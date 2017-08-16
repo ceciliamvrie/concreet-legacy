@@ -86,6 +86,12 @@ class BigCalBasic extends React.Component{
     })
   }
 
+  closeViewModal() {
+    this.setState({
+      displayViewModal: !this.state.displayViewModal
+    })
+  }
+
   render(){
     return (
       <div className="calendar">
@@ -129,8 +135,23 @@ class BigCalBasic extends React.Component{
         selectedGroups={this.props.selectedGroups}
         meetingLength={this.state.meetingLength}
         renderEventsToCalendar = {this.renderEventsToCalendar.bind(this)}
-        />} : null}
+        /> : null}
+
+        {this.state.displayModal && <FreeTimeSlotsModal
+          user={this.props.user}
+          availableSlots={this.state.availableSlots}
+          selectedDate={this.state.selectedDate}
+          getEventDateTime={this.getEventDateTime.bind(this)}
+          eventTitle={this.state.eventTitle}
+          selectedContacts={this.props.selectedContacts}
+          selectedGroups={this.props.selectedGroups}
+          meetingLength={this.state.meetingLength}
+          renderEventsToCalendar = {this.renderEventsToCalendar.bind(this)}
+        />
+         }
+
         {this.state.displayViewModal && <ViewEventModal
+          closeViewModal={this.closeViewModal.bind(this)}
           user={this.props.user}
           eventPicked={this.state.eventPicked}
           availableSlots={this.state.availableSlots}
