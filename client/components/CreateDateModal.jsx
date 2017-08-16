@@ -41,6 +41,7 @@ class CreateDateModal extends React.Component {
   }
 
   closeModal() {
+    this.props.closeModal()
     this.setState({modalIsOpen: false});
   }
 
