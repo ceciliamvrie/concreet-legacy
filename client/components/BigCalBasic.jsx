@@ -152,15 +152,12 @@ class BigCalBasic extends React.Component{
 
         {this.state.displayViewModal && <ViewEventModal
           closeViewModal={this.closeViewModal.bind(this)}
+          updateSlotsAndEventInfo={this.updateSlotsAndEventInfo.bind(this)}
           user={this.props.user}
           eventPicked={this.state.eventPicked}
-          availableSlots={this.state.availableSlots}
-          selectedDate={this.state.selectedDate}
           getEventDateTime={this.getEventDateTime.bind(this)}
-          eventTitle={this.state.eventTitle}
           selectedContacts={this.props.selectedContacts}
           selectedGroups={this.props.selectedGroups}
-          meetingLength={this.state.meetingLength}
           renderEventsToCalendar = {this.renderEventsToCalendar.bind(this)}
           />
         }
