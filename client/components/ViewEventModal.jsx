@@ -2,6 +2,7 @@ import React from 'react';
 import Modal from 'react-modal';
 import CreateEventModal from './CreateDateModal.jsx';
 import Iframe from 'react-iframe';
+import EditEvent from './EditEvent.jsx';
 
 // Modal styling
 const customStyles = {
@@ -26,7 +27,9 @@ class ViewEventModal extends React.Component {
     super();
 
     this.state = {
-      modalIsOpen: true
+      modalIsOpen: true,
+      toggleEdit: false
+
     };
 
     this.openModal = this.openModal.bind(this);
@@ -48,6 +51,13 @@ class ViewEventModal extends React.Component {
     this.setState({modalIsOpen: false});
   }
 
+  toggleEditEvent() {
+    console.log('toggled')
+    this.setState({
+      toggleEdit: !this.state.toggleEdit
+    })
+  }
+
   render() {
     return (
       <div className="timeModal">
@@ -59,9 +69,9 @@ class ViewEventModal extends React.Component {
           style={customStyles}
           contentLabel="Time Slots Modal"
         >
-          <button className="createEventButton"> Edit this event </button>
+          <button className="createEventButton" onClick={this.toggleEditEvent.bind(this)}> Edit </button>
           <h2 className="modalTitle">{this.props.eventPicked.summary}</h2>
-          <h3> Meeting date: {this.props.eventPicked.start
+          <h3> When: {this.props.eventPicked.start
               .toString().split(' ').slice(0, 4).join(' ')} 
           </h3>
           <div>
@@ -76,7 +86,7 @@ class ViewEventModal extends React.Component {
            display="initial"
            position="relative"
            allowFullScreen/>
-
+           {this.state.toggleEdit && <EditEvent eventPicked={this.props.eventPicked}/>}
           {
             console.log()
           }

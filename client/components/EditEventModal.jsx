@@ -3,10 +3,10 @@ import moment from 'moment';
 
 import * as CalendarModel from '../models/calendar.js';
 import events from './events';
-import CreateDateModal from './CreateDateModal.jsx';
+import EditEvent from './EditEvent.jsx';
 import findFreeTimes from '../models/findFreeTimes.js';
 
-class AddEventModal extends React.Component {
+class EditEventModal extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -64,7 +64,7 @@ class AddEventModal extends React.Component {
         <form onSubmit={this.handleEventSubmit.bind(this)}>
           <input type="text" name="title" placeholder="Meeting Title"></input>
           <input type="text" name="meetingLength" placeholder="Meeting Length (min)"></input>
-          <button className="createEventButton">Create event</button>
+          <button className="createEventButton">Update event</button>
         </form>
       </div>
 
@@ -72,4 +72,4 @@ class AddEventModal extends React.Component {
   }
 }
 
-export default AddEventModal;
+export default EditEventModal;
