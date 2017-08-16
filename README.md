@@ -21,7 +21,7 @@ Finds available meeting times and allows quick sending of gcal invites to attend
 * Outlook integration
 * Calendar selector
 * Automated signup email upon Contact add of a non-existing user
-Flex dates (given a date range, find all available times over that range)
+* Flex dates (given a date range, find all available times over that range)
 * Get event details when clicking on events in BigCal
 * Required/Optional attendees (designate some attendees as required, and some as optional for finding open times)
 * Make a local calendar

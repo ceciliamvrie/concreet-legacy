@@ -225,12 +225,14 @@ export const addEvent = (queryGroup, currentUser, title, timeStart, timeEnd, cal
     "start": start,
     "end": end,
     "reminders": {
-      "useDefault": true,
+      "useDefault": true
     },
     "summary": title
   };
 
-  makeAjaxCall('POST', `https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events`, accessToken, requestBody, (data) => {
+  let url = `https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events?sendNotifications=true`;
+
+  makeAjaxCall('POST', url, accessToken, requestBody, (data) => {
     callback(data)
   })
 
