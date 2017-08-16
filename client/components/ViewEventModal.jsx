@@ -1,6 +1,8 @@
 import React from 'react';
 import Modal from 'react-modal';
-import AddEventModal from './AddEventModal.jsx';
+import CreateEventModal from './CreateDateModal.jsx';
+import Iframe from 'react-iframe';
+
 // Modal styling
 const customStyles = {
   content : {
@@ -10,7 +12,8 @@ const customStyles = {
     bottom                : 'auto',
     marginRight           : '-50%',
     transform             : 'translate(-50%, -50%)',
-    maxHeight             : '325px', // This sets the max height
+    maxHeight             : '425px', // This sets the max height
+    width                 : '500px',
     overflow              : 'scroll', // This tells the modal to scroll
     border                : '1px solid black',
     //borderBottom          : '1px solid black', // for some reason the bottom border was being cut off, so made it a little thicker
@@ -18,7 +21,7 @@ const customStyles = {
   }
 };
 
-class CreateDateModal extends React.Component {
+class ViewEventModal extends React.Component {
   constructor() {
     super();
 
@@ -37,11 +40,11 @@ class CreateDateModal extends React.Component {
 
   afterOpenModal() {
     // references are now sync'd and can be accessed.
-    this.subtitle.style.color = '#f00';
+    // this.subtitle.style.color = '#f00';
   }
 
   closeModal() {
-    this.props.closeModal()
+    this.props.closeViewModal()
     this.setState({modalIsOpen: false});
   }
 
@@ -56,20 +59,32 @@ class CreateDateModal extends React.Component {
           style={customStyles}
           contentLabel="Time Slots Modal"
         >
+          <button className="createEventButton"> Edit this event </button>
+          <h2 className="modalTitle">{this.props.eventPicked.summary}</h2>
+          <h3> Meeting date: {this.props.eventPicked.start
+              .toString().split(' ').slice(0, 4).join(' ')} 
+          </h3>
+          <div>
+            {this.props.eventPicked.attendees.map(atnd => 
+              <h5>{atnd.email}: {atnd.responseStatus}</h5>
+            )}
+          </div>
 
-          <h2 className="modalTitle">Schedule A Date</h2>
-          <AddEventModal
-            user={this.props.user}
-            updateSlotsAndEventInfo={this.props.updateSlotsAndEventInfo}
-            selectedContacts={this.props.selectedContacts}
-            selectedGroups={this.props.selectedGroups}
-            date={this.props.selectedDate}
-            style={this.customStyles}
-          />
+   <Iframe url="https://vignette1.wikia.nocookie.net/prowrestling/images/a/a1/John_Cena_Awards.png/revision/latest?cb=20131106181414"
+           width="200px"
+           height="200px"
+           display="initial"
+           position="relative"
+           allowFullScreen/>
+
+          {
+            console.log()
+          }
         </Modal>
       </div>
     );
   }
 }
 
-export default CreateDateModal;
+export default ViewEventModal;
+

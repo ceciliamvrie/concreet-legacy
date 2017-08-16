@@ -46,6 +46,7 @@
     "react-bootstrap": "^0.31.2",
     "react-dates": "^12.4.0",
     "react-dom": "^15.6.1",
+    "react-iframe": "^1.0.7",
     "react-modal": "^2.2.2",
     "rodal": "^1.2.10"
   }
