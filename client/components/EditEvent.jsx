@@ -61,7 +61,9 @@ class EditEvent extends React.Component {
           style={customStyles}
           contentLabel="Time Slots Modal"
         >
-        <EditEventModal/>
+        <EditEventModal 
+          updateSlotsAndEventInfo={this.props.updateSlotsAndEventInfo}
+          toggleEdit={this.props.toggleEdit}/>
         </Modal>
       </div>
 
