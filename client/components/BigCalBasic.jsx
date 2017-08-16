@@ -42,6 +42,7 @@ class BigCalBasic extends React.Component{
   }
 
   updateSlotsAndEventInfo(freeSlots, eventDate, eventTitle, eventLength) {
+    console.log('opening dates AAHHHH')
     this.setState({
       availableSlots: freeSlots,
       displayModal: true,
@@ -58,9 +59,16 @@ class BigCalBasic extends React.Component{
     })
   }
 
-  closeModal() {
+  closeDisplayModal() {
     this.setState({
-      displayPickDateModal: !this.state.displayPickDateModal
+      displayModal: !this.state.displayModal,
+    })
+  }
+
+  closeModal() {
+    console.log('inside closeModal')
+    this.setState({
+      displayPickDateModal: !this.state.displayPickDateModal,
     })
   }
 
@@ -85,8 +93,9 @@ class BigCalBasic extends React.Component{
           views={allViews}
           titleAccessor='summary'
           defaultDate={new Date()}
-          onSelectSlot={(slotInfo) =>
+          onSelectSlot={(slotInfo) => {
             this.setState({displayPickDateModal: !this.state.displayPickDateModal, selectedDate: slotInfo.start.toLocaleString().split(',')[0]})
+          }
           }
         />
         {this.state.displayPickDateModal ? <CreateDateModal
@@ -103,6 +112,7 @@ class BigCalBasic extends React.Component{
           renderEventsToCalendar = {this.renderEventsToCalendar.bind(this)}
         /> : null}
         {this.state.displayModal && <FreeTimeSlotsModal
+          closeDisplayModal={this.closeDisplayModal.bind(this)}
           user={this.props.user}
           availableSlots={this.state.availableSlots}
           selectedDate={this.state.selectedDate}

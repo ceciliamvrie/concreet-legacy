@@ -69,8 +69,9 @@ const refreshToken = (user, callback) => {
   })
 }
 
-//general fucntion to make an ajax call. simple refactoring
+//general function to make an ajax call. simple refactoring
 const makeAjaxCall = (type, url, accessToken, requestBody, callback) => {
+  console.log(requestBody)
   $.ajax({
     type: type,
     url: url,
@@ -152,7 +153,7 @@ export const processEvents = function (eventsList, callback) {
 
 //checks a group for their freeBusy times
 export const freeBusy = (queryGroup, currentUser, timeMin, timeMax, callback) => {
-
+  console.log('QUERYGROUP', queryGroup,'CURRENTUSER', currentUser, 'TIMEMIN', timeMin, 'TIMEMAX', timeMax, callback)
   var allContactsCalendars = [];
 
   // add current user to queries
