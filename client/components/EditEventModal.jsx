@@ -71,7 +71,7 @@ class EditEventModal extends React.Component {
           <input type="text" name="title" placeholder={this.props.title}></input>
           <input type="text" name="meetingLength" placeholder="Meeting Length (min)"></input>
           <button className="createEventButton">Update event</button>
-          <button className="createEventButton" onClick={this.props.toggleEdit}>Cancel</button>
+          <button className="createEventButton" style={{margin: '20px'}}onClick={this.props.toggleEdit}>Cancel</button>
         </form>
       </div>
 
