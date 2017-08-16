@@ -94,13 +94,14 @@ class ViewEventModal extends React.Component {
             </div>
 
             <div className="modalTitle">
-              <Iframe url="https://vignette1.wikia.nocookie.net/prowrestling/images/a/a1/John_Cena_Awards.png/revision/latest?cb=20131106181414"
-               width="200px"
-               height="200px"
-               display="initial"
-               position="relative"
-               allowFullScreen
-               />
+              <Iframe url="https://www.google.com/maps/embed/v1/place?key=AIzaSyCMOEDp5TLmM37tCpw9i-ERmpU2kqhEMJg&q=Space+Needle,Seattle+WA"
+                 width="485px"
+                 height="350px"
+                 display="initial"
+                 position="relative"
+                 async
+                 defer
+                 allowFullScreen/>
              </div>
           </div>: 
 
@@ -122,4 +123,3 @@ class ViewEventModal extends React.Component {
 }
 
 export default ViewEventModal;
-
