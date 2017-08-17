@@ -1,8 +1,7 @@
 import React from 'react';
 import moment from 'moment';
-
 import { SingleDatePicker } from 'react-dates';
-
+import AddEventModal from './AddEventModal.jsx';
 import * as CalendarModel from '../models/calendar.js';
 import events from './events';
 import FreeTimeSlotsModal from './FreeTimeSlotsModal.jsx';
@@ -11,12 +10,24 @@ import findFreeTimes from '../models/findFreeTimes.js';
 class AddEvent extends React.Component {
   constructor(props) {
     super(props);
-    console.log(this.props)
+
     this.state = {
-      date: ''
+      topCreateSelected: false,
+      value: 30
     }
   }
 
+  handleIt() {
+    this.props.closeModal()
+
+  }
+
+  handleClick() {
+    this.setState({
+      topCreateSelected: !this.state.topCreateSelected
+    })
+  }
+  // check if contact already exists to prevent duplicates
   checkExist(contacts, target) {
     let check = false;
     for (let contact of contacts) {
@@ -29,42 +40,56 @@ class AddEvent extends React.Component {
 
   handleEventSubmit(e) {
     e.preventDefault();
-
-    var meetingLength = e.target.meetingLength.value
+    console.log(this.props)
+    var meetingLength = JSON.parse(e.target.meetingLength.value)
     var meetingTitle = e.target.title.value
-    var timeMin = moment(e.target.title.value, "MM/DD/YYYY");
-
+    let location = e.target.location.value;
+    var timeMin = moment(e.target.date.value, "MM/DD/YYYY");
     var queryInfo = {
       timeMin: timeMin.toISOString(),
       timeMax: timeMin.add('1', 'days').toISOString()
     };
-
+    // put selected contacts and selected contacts from groups into same array
     var allContacts = this.props.selectedContacts.slice();
     this.props.selectedGroups.forEach((group)=> {
+      // console.log('group: ', group)
       group.contacts.forEach((contact) => {
         if (!this.checkExist(allContacts, contact)) {
+          // console.log('Contact: ', allContacts)
           allContacts.push(contact);
         }
       })
     })
 
     CalendarModel.freeBusy(allContacts, this.props.user.user, queryInfo.timeMin, queryInfo.timeMax, (calendars) => {
+      console.log(queryInfo.timeMin, queryInfo.timeMax)
+      // receives back calendars array with each element being an object with a email address as its only property
+      // each property has a value that is an object with a busy property
+      // value of busy property is an array of objects that include start and end property of busy times
       findFreeTimes.findAvailableSlots(meetingLength, calendars, (freeSlots) => {
-        this.props.updateSlotsAndEventInfo(freeSlots, queryInfo.timeMin, meetingTitle, meetingLength)
+        // passsing back the available slots as well as the selected date in ISO format (queryInfo.timeMin)
+        this.props.updateSlotsAndEventInfo(freeSlots, queryInfo.timeMin, meetingTitle, meetingLength, location)
       });
     })
-
+    this.setState({
+      topCreateSelected: !this.state.topCreateSelected
+    })
   }
 
   render() {
     return (
       <div className="addevent">
-        <form onSubmit={this.handleEventSubmit.bind(this)}>
-          <input type="text" name="title" placeholder="Meeting Title"></input>
-          <input type="text" name="meetingLength" placeholder="Meeting Length (min)"></input>
-          <input type="text" name="date" placeholder="MM/DD/YYYY"></input>
-          <button className="createEventButton">Create event</button>
-        </form>
+        {
+          this.state.topCreateSelected ?
+            <form onSubmit={this.handleEventSubmit.bind(this)}>
+              <input type="text" name="title" placeholder="Meeting Title"></input>
+              <span><h4>Time Length:</h4> {Math.floor(this.state.value / 60)} Hours   {this.state.value % 60} Mins</span>
+              <input type="range" name="meetingLength" min="30" max="600" value={this.state.value} onChange={(e => this.setState({value: e.target.value}))}></input>
+              <input type="text" name="location" placeholder="Location"></input>
+              <input type="text" name="date" placeholder="MM/DD/YYYY"></input>
+              <button className="createEventButton" onClick={this.handleIt.bind(this)}>Create It!</button>
+            </form> : <button className="createEventButton" onClick={this.handleClick.bind(this)}>Create event</button>
+        }
       </div>
 
     );

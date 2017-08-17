@@ -33,6 +33,7 @@ class AddEventModal extends React.Component {
     var meetingLength = JSON.parse(e.target.meetingLength.value)
     var meetingTitle = e.target.title.value
     var selectedTime = this.state.topCreateSelected ? e.target.title.value : this.props.date
+    let location = e.target.location.value;
     var timeMin = moment(this.props.date, "MM/DD/YYYY");
     var queryInfo = {
       timeMin: timeMin.toISOString(),
@@ -57,7 +58,7 @@ class AddEventModal extends React.Component {
       // value of busy property is an array of objects that include start and end property of busy times
       findFreeTimes.findAvailableSlots(meetingLength, calendars, (freeSlots) => {
         // passsing back the available slots as well as the selected date in ISO format (queryInfo.timeMin)
-        this.props.updateSlotsAndEventInfo(freeSlots, queryInfo.timeMin, meetingTitle, meetingLength)
+        this.props.updateSlotsAndEventInfo(freeSlots, queryInfo.timeMin, meetingTitle, meetingLength, location)
       });
     })
 
@@ -70,9 +71,7 @@ class AddEventModal extends React.Component {
           <input type="text" name="title" placeholder="Meeting Title"></input>
           <span><h4>Time Length:</h4> {Math.floor(this.state.value / 60)} Hours   {this.state.value % 60} Mins</span>
           <input type="range" name="meetingLength" min="30" max="600" value={this.state.value} onChange={(e => this.setState({value: e.target.value}))}></input>
-          {
-            this.state.topCreateSelected ? <input type="text" name="date" placeholder="MM/DD/YYYY"></input> : null
-          }
+          <input type="text" name="location" placeholder="Location"></input>
           <button className="createEventButton" onClick={this.props.close}>Create event</button>
         </form>
       </div>
