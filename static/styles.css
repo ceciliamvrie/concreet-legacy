@@ -243,6 +243,8 @@ input:-webkit-autofill {
     text-align: center
 }
 
+
+
 .slotButtonDiv {
     width: 100%;
     text-align: center;
@@ -259,6 +261,11 @@ input:-webkit-autofill {
     text-align: center;
     text-decoration: none;
     font-size: 16px;
+}
+
+#minusDelete {
+    background-color: white;
+    color: red;
 }
 
 #event-location-map {

@@ -86,8 +86,8 @@ class ViewEventModal extends React.Component {
 
             <div>
               <Columns columns="2">
-                {this.props.eventPicked.attendees.map(atnd =>
-                  <div id="attendee">
+                {this.props.eventPicked.attendees.map((atnd, i) =>
+                  <div id="attendee" i={i}>
                   {atnd.email}: <label style={{fontStyle: 'italic', fontSize: '14px'}}>{atnd.responseStatus}</label></div>
                 )}
               </Columns>
