@@ -1,17 +1,18 @@
 import React from 'react';
 import moment from 'moment';
-
 import * as CalendarModel from '../models/calendar.js';
 import events from './events';
 import CreateDateModal from './CreateDateModal.jsx';
 import findFreeTimes from '../models/findFreeTimes.js';
+import InputRange from 'react-input-range';
 
 class AddEventModal extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      topCreateSelected: false
+      topCreateSelected: false,
+      value: 30
     }
   }
 
@@ -29,7 +30,7 @@ class AddEventModal extends React.Component {
   handleEventSubmit(e) {
     e.preventDefault();
 
-    var meetingLength = e.target.meetingLength.value
+    var meetingLength = JSON.parse(e.target.meetingLength.value)
     var meetingTitle = e.target.title.value
     var selectedTime = this.state.topCreateSelected ? e.target.title.value : this.props.date
     var timeMin = moment(this.props.date, "MM/DD/YYYY");
@@ -67,7 +68,8 @@ class AddEventModal extends React.Component {
       <div className="addevent">
         <form onSubmit={this.handleEventSubmit.bind(this)}>
           <input type="text" name="title" placeholder="Meeting Title"></input>
-          <input type="text" name="meetingLength" placeholder="Meeting Length (min)"></input>
+          <span><h4>Time Length:</h4> {Math.floor(this.state.value / 60)} Hours   {this.state.value % 60} Mins</span>
+          <input type="range" name="meetingLength" min="30" max="600" value={this.state.value} onChange={(e => this.setState({value: e.target.value}))}></input>
           {
             this.state.topCreateSelected ? <input type="text" name="date" placeholder="MM/DD/YYYY"></input> : null
           }
