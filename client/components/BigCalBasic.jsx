@@ -28,7 +28,8 @@ class BigCalBasic extends React.Component{
       selectedDate: undefined,
       eventDateTime: undefined,
       eventTitle: '',
-      meetingLength: 0
+      meetingLength: 0,
+      location: ''
     }
 
     this.renderEventsToCalendar();
@@ -63,14 +64,14 @@ class BigCalBasic extends React.Component{
     // });
   }
 
-  updateSlotsAndEventInfo(freeSlots, eventDate, eventTitle, eventLength) {
-    console.log('opening dates AAHHHH')
+  updateSlotsAndEventInfo(freeSlots, eventDate, eventTitle, eventLength, location) {
     this.setState({
       availableSlots: freeSlots,
       displayModal: true,
       selectedDate: eventDate,
       eventTitle: eventTitle,
-      meetingLength: eventLength
+      meetingLength: eventLength,
+      location: location
     })
   }
 
@@ -141,6 +142,7 @@ class BigCalBasic extends React.Component{
         selectedDate={this.state.selectedDate}
         getEventDateTime={this.getEventDateTime.bind(this)}
         eventTitle={this.state.eventTitle}
+        location={this.state.location}
         selectedContacts={this.props.selectedContacts}
         selectedGroups={this.props.selectedGroups}
         meetingLength={this.state.meetingLength}
@@ -155,6 +157,7 @@ class BigCalBasic extends React.Component{
           selectedDate={this.state.selectedDate}
           getEventDateTime={this.getEventDateTime.bind(this)}
           eventTitle={this.state.eventTitle}
+          location={this.state.location}
           selectedContacts={this.props.selectedContacts}
           selectedGroups={this.props.selectedGroups}
           meetingLength={this.state.meetingLength}

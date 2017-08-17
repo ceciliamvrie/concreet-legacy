@@ -197,7 +197,7 @@ export const freeBusy = (queryGroup, currentUser, timeMin, timeMax, callback) =>
 }
 
 // makes a call from the current user to add event to all users on the queryGroup
-export const addEvent = (queryGroup, currentUser, title, timeStart, timeEnd, callback) => {
+export const addEvent = (queryGroup, currentUser, title, timeStart, timeEnd, location, callback) => {
   var accessToken = currentUser.accessToken;
   var calendarId = currentUser.emailAddress;
   var attendees = []
@@ -206,7 +206,7 @@ export const addEvent = (queryGroup, currentUser, title, timeStart, timeEnd, cal
   for (var member of queryGroup) {
     var attendee = {
       email: member.emailAddress,
-      responseStatus: 'accepted'
+      responseStatus: 'needsAction'
     };
     attendees.push(attendee);
   }
@@ -227,8 +227,11 @@ export const addEvent = (queryGroup, currentUser, title, timeStart, timeEnd, cal
     "reminders": {
       "useDefault": true
     },
-    "summary": title
+    "summary": title,
+    'location': location
   };
+
+  console.log('REQUEST BODY location', requestBody.location);
 
   let url = `https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events?sendNotifications=true`;
 

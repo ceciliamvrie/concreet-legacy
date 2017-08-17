@@ -94,7 +94,7 @@ class ViewEventModal extends React.Component {
             </div>
 
             <div className="modalTitle" id="event-location-map">
-              <Iframe url="https://www.google.com/maps/embed/v1/place?key=AIzaSyCMOEDp5TLmM37tCpw9i-ERmpU2kqhEMJg&q=Space+Needle,Seattle+WA"
+              <Iframe url={"https://www.google.com/maps/embed/v1/place?key=AIzaSyCMOEDp5TLmM37tCpw9i-ERmpU2kqhEMJg&q=" + this.props.eventPicked.location}
                  width="485px"
                  height="350px"
                  display="initial"
