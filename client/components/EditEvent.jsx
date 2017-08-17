@@ -6,7 +6,6 @@ import * as CalendarModel from '../models/calendar.js';
 import events from './events';
 import findFreeTimes from '../models/findFreeTimes.js';
 import EditEventModal from './EditEventModal.jsx';
-import DatePicker from "react-bootstrap-date-picker";
 import FormGroup from 'react-bootstrap/lib/FormGroup';
 
 const customStyles = {
@@ -50,16 +49,16 @@ class EditEvent extends React.Component {
 
   handleDatePicked(dateValue, formattedValue) {
     this.setState({
-      dateValue: dateValue, // ISO String, ex: "2016-11-19T12:00:00.000Z" 
-      formattedValue: formattedValue // Formatted String, ex: "11/19/2016" 
+      dateValue: dateValue, // ISO String, ex: "2016-11-19T12:00:00.000Z"
+      formattedValue: formattedValue // Formatted String, ex: "11/19/2016"
     });
   }
 
   componentDidUpdate(){
-    // Access ISO String and formatted values from the DOM. 
+    // Access ISO String and formatted values from the DOM.
     var hiddenInputElement = document.getElementById("datePicker");
-    console.log(hiddenInputElement.value); // ISO String, ex: "2016-11-19T12:00:00.000Z" 
-    console.log(hiddenInputElement.getAttribute('data-formattedvalue')) // Formatted String, ex: "11/19/2016" 
+    console.log(hiddenInputElement.value); // ISO String, ex: "2016-11-19T12:00:00.000Z"
+    console.log(hiddenInputElement.getAttribute('data-formattedvalue')) // Formatted String, ex: "11/19/2016"
   }
 
   openModal() {
@@ -89,7 +88,7 @@ class EditEvent extends React.Component {
 
     this.setState({
       attendees: this.props.eventPicked.attendees.splice(i, 1)
-    }) 
+    })
   }
 
   editTitle() {
@@ -138,7 +137,7 @@ class EditEvent extends React.Component {
               <button className="createEventButton" onClick={this.deleteEvent}> Delete this Event (*batman voice* it's garbage ) </button>
             </div>
 
-            {this.state.toggleTitle ? 
+            {this.state.toggleTitle ?
               <form onSubmit={this.handleTitleChange.bind(this)}>
                 <input type="text" className="titleEdit" name="title" placeholder={this.props.eventPicked.summary}/>
                 <button> Accept </button>
@@ -158,10 +157,10 @@ class EditEvent extends React.Component {
                 .toString().split(' ').slice(0, 4).join(' ')}
               </h3>
               </div>
-            : 
+            :
               <FormGroup style={{textAlign: 'center', width: '35%', marginLeft: '32%',}}>
                 <DatePicker clearButtonElement="" id="datePicker" style={{height: '25px', fontSize: '18px', textAlign: 'center', width: '100%'}}
-                 value={this.state.dateValue} onChange={this.handleDatePicked}/>  
+                 value={this.state.dateValue} onChange={this.handleDatePicked}/>
                 <button onClick={this.handleDateChange.bind(this)}> Accept </button>
               </FormGroup>
             }
