@@ -67,6 +67,7 @@ class CreateDateModal extends React.Component {
             updateSlotsAndEventInfo={this.props.updateSlotsAndEventInfo}
             selectedContacts={this.props.selectedContacts}
             selectedGroups={this.props.selectedGroups}
+            location={this.props.location}
             date={this.props.selectedDate}
             style={this.customStyles}
           />

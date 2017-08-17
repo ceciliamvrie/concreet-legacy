@@ -66,6 +66,7 @@ class FreeTimeSlotsModal extends React.Component {
                   selectedDate={this.props.selectedDate}
                   getEventDateTime={this.props.getEventDateTime}
                   eventTitle={this.props.eventTitle}
+                  location={this.props.location}
                   selectedContacts={this.props.selectedContacts}
                   selectedGroups={this.props.selectedGroups}
                   meetingLength={this.props.meetingLength}
