@@ -202,13 +202,11 @@ export const addEvent = (queryGroup, currentUser, title, timeStart, timeEnd, loc
   var calendarId = currentUser.emailAddress;
   var attendees = []
 
-  console.log('********* LOCATION ***********', location);
-
   //adds all memebers of the queryGroup to the attendee param for the ajax call
   for (var member of queryGroup) {
     var attendee = {
       email: member.emailAddress,
-      responseStatus: 'accepted'
+      responseStatus: 'needsAction'
     };
     attendees.push(attendee);
   }
@@ -232,6 +230,8 @@ export const addEvent = (queryGroup, currentUser, title, timeStart, timeEnd, loc
     "summary": title,
     'location': location
   };
+
+  console.log('REQUEST BODY location', requestBody.location);
 
   let url = `https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events?sendNotifications=true`;
 

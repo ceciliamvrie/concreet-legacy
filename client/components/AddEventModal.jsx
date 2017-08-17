@@ -57,7 +57,7 @@ class AddEventModal extends React.Component {
       // value of busy property is an array of objects that include start and end property of busy times
       findFreeTimes.findAvailableSlots(meetingLength, calendars, (freeSlots) => {
         // passsing back the available slots as well as the selected date in ISO format (queryInfo.timeMin)
-        this.props.updateSlotsAndEventInfo(freeSlots, queryInfo.timeMin, meetingTitle, meetingLength)
+        this.props.updateSlotsAndEventInfo(freeSlots, queryInfo.timeMin, meetingTitle, meetingLength, location)
       });
     })
 
