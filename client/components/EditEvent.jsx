@@ -1,11 +1,13 @@
 import React from 'react';
 import moment from 'moment';
 import Modal from 'react-modal';
-
+import Columns from 'react-columns';
 import * as CalendarModel from '../models/calendar.js';
 import events from './events';
 import findFreeTimes from '../models/findFreeTimes.js';
 import EditEventModal from './EditEventModal.jsx';
+import DatePicker from "react-bootstrap-date-picker";
+import FormGroup from 'react-bootstrap/lib/FormGroup';
 
 const customStyles = {
   content : {
@@ -15,7 +17,8 @@ const customStyles = {
     bottom                : 'auto',
     marginRight           : '-50%',
     transform             : 'translate(-50%, -50%)',
-    maxHeight             : '325px', // This sets the max height
+    maxHeight             : '425px', // This sets the max height
+    width                 : '700px',
     overflow              : 'scroll', // This tells the modal to scroll
     border                : '1px solid black',
     //borderBottom          : '1px solid black', // for some reason the bottom border was being cut off, so made it a little thicker
@@ -27,13 +30,36 @@ class EditEvent extends React.Component {
   constructor(props) {
     super(props);
 
+    var value = new Date().toISOString();
+
     this.state = {
-      modalIsOpen: true
+      modalIsOpen: true,
+      attendees: this.props.eventPicked.attendees,
+      toggleTitle: false,
+      toggleDate: false,
+      toggleLocation: false,
+      dateValue: value,
+      formattedValue: ''
     };
 
     this.openModal = this.openModal.bind(this);
     this.afterOpenModal = this.afterOpenModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
+    this.handleDatePicked = this.handleDatePicked.bind(this);
+  }
+
+  handleDatePicked(dateValue, formattedValue) {
+    this.setState({
+      dateValue: dateValue, // ISO String, ex: "2016-11-19T12:00:00.000Z" 
+      formattedValue: formattedValue // Formatted String, ex: "11/19/2016" 
+    });
+  }
+
+  componentDidUpdate(){
+    // Access ISO String and formatted values from the DOM. 
+    var hiddenInputElement = document.getElementById("datePicker");
+    console.log(hiddenInputElement.value); // ISO String, ex: "2016-11-19T12:00:00.000Z" 
+    console.log(hiddenInputElement.getAttribute('data-formattedvalue')) // Formatted String, ex: "11/19/2016" 
   }
 
   openModal() {
@@ -50,6 +76,51 @@ class EditEvent extends React.Component {
     this.setState({modalIsOpen: false});
   }
 
+  deleteEvent() {
+    // delete event
+    console.log('delete event button clicked');
+  }
+
+  removeAttendee(e) {
+    // have this send a confirmation email that they were removed from event
+    e.preventDefault()
+
+    var i = e.target.getAttribute('name', this.props.eventPicked.attendees.length)
+
+    this.setState({
+      attendees: this.props.eventPicked.attendees.splice(i, 1)
+    }) 
+  }
+
+  editTitle() {
+    this.setState({
+      toggleTitle: !this.state.toggleTitle
+    })
+  }
+
+  editLocation() {
+    this.setState({
+      toggleLocation: !this.state.toggleLocation
+    })
+  }
+
+  editDate() {
+    this.setState({
+      toggleDate: !this.state.toggleDate
+    })
+  }
+
+  handleTitleChange(e) {
+    e.preventDefault();
+    this.editTitle()
+    console.log('title changed', e.target.title.value);
+  }
+
+  handleDateChange() {
+    this.editDate()
+    console.log('date changed', this.state.formattedValue, this.state.dateValue);
+  }
+
   render() {
     return (
       <div className="addevent">
@@ -61,14 +132,62 @@ class EditEvent extends React.Component {
           style={customStyles}
           contentLabel="Time Slots Modal"
         >
-        <EditEventModal 
-          updateSlotsAndEventInfo={this.props.updateSlotsAndEventInfo}
-          toggleEdit={this.props.toggleEdit}/>
-        </Modal>
+
+          <div>
+            <div className="modalTitle">
+              <button className="createEventButton" onClick={this.deleteEvent}> Delete this Event (*batman voice* it's garbage ) </button>
+            </div>
+
+            {this.state.toggleTitle ? 
+              <form onSubmit={this.handleTitleChange.bind(this)}>
+                <input type="text" className="titleEdit" name="title" placeholder={this.props.eventPicked.summary}/>
+                <button> Accept </button>
+              </form>
+            :
+              <h2 className="modalTitle">
+                <i onClick={this.editTitle.bind(this)} className="fa fa-pencil fa-fw" aria-hidden="true"></i>
+                 {this.props.eventPicked.summary}
+              </h2>
+            }
+
+            {!this.state.toggleDate ?
+              <div>
+              <h3 className="modalTitle">
+              <i onClick={this.editDate.bind(this)} className="fa fa-pencil fa-fw" aria-hidden="true"></i>
+               When: {this.props.eventPicked.start
+                .toString().split(' ').slice(0, 4).join(' ')}
+              </h3>
+              </div>
+            : 
+              <FormGroup style={{textAlign: 'center', width: '35%', marginLeft: '32%',}}>
+                <DatePicker clearButtonElement="" id="datePicker" style={{height: '25px', fontSize: '18px', textAlign: 'center', width: '100%'}}
+                 value={this.state.dateValue} onChange={this.handleDatePicked}/>  
+                <button onClick={this.handleDateChange.bind(this)}> Accept </button>
+              </FormGroup>
+            }
+
+            <div>
+              <Columns columns="2">
+                {this.props.eventPicked.attendees.map((atnd, i) =>
+                  <div id="attendee"><i className="fa fa-minus-circle fa-fw" id="minusDelete" aria-hidden="true" onClick={this.removeAttendee.bind(this)} name={i}></i>
+                  {atnd.email}: <label style={{fontStyle: 'italic', fontSize: '14px'}}>{atnd.responseStatus}</label></div>
+                )}
+              </Columns>
+            </div>
+            <div style={{textAlign: 'right'}}>
+              <button className="createEventButton">Update event</button>
+              <button className="createEventButton" style={{margin: '20px'}}onClick={this.props.toggleEdit}>Cancel</button>
+            </div>
+          </div>
+          </Modal>
+        {console.log()}
       </div>
 
     );
   }
 }
+
+
+
 
 export default EditEvent;

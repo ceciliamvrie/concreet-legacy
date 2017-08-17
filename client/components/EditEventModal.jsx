@@ -25,6 +25,8 @@ class EditEventModal extends React.Component {
   handleEventSubmit(e) {
     e.preventDefault();
 
+    console.log('event is', e.target.meetingLength.value, e.target.title.value)
+
     var meetingLength = e.target.meetingLength.value
     var meetingTitle = e.target.title.value
     var timeMin = moment(this.props.date, "MM/DD/YYYY");
@@ -65,12 +67,11 @@ class EditEventModal extends React.Component {
   render() {
     return (
       <div className="addevent">
-          <input type="text" name="title" placeholder={this.props.title}></input>
-          <input type="text" name="meetingLength" placeholder="Meeting Length (min)"></input>
-          <button className="createEventButton" onClick={this.handleEventSubmit.bind(this)}>Update event</button>
-          <button className="createEventButton" onClick={this.props.toggleEdit}>Cancel</button>
-      </div>
+        <form onSubmit={this.handleEventSubmit.bind(this)}>
+          <input type="text" style={{width: '300px'}} name="title" value={this.props.title}></input>
 
+        </form>
+      </div>
     );
   }
 }
