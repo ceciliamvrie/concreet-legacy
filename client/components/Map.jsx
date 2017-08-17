@@ -1,6 +1,7 @@
 
 import React from 'react';
 import Iframe from 'react-iframe';
+import API_KEY from '../gmaps_config.js';
 
 class Map extends React.Component {
   constructor(props) {
@@ -13,13 +14,14 @@ class Map extends React.Component {
 
   render() {
     return (
-      <Iframe
-        width="485px"
-        height="350px"
-        frameborder="0" style="border:0"
-        async defer
-        src={"https://www.google.com/maps/embed/v1/place?key=AIzaSyCMOEDp5TLmM37tCpw9i-ERmpU2kqhEMJg&q=" + this.state.location} allowFullScreen>
-      </iframe>
+      <Iframe url={"https://www.google.com/maps/embed/v1/place?key=" + API_KEY + "&q=" + this.state.location}
+         width="485px"
+         height="350px"
+         display="initial"
+         position="relative"
+         async
+         defer
+         allowFullScreen/>
     );
   }
 }
