@@ -7,6 +7,7 @@ import events from './events';
 import findFreeTimes from '../models/findFreeTimes.js';
 import EditEventModal from './EditEventModal.jsx';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
+import DatePicker from 'react-bootstrap-date-picker';
 
 const customStyles = {
   content : {
@@ -162,11 +163,11 @@ class EditEvent extends React.Component {
               <FormGroup style={{textAlign: 'center', width: '35%', marginLeft: '32%'}}>
                 <DatePicker clearButtonElement="" id="datePicker" style={{height: '25px', fontSize: '18px', textAlign: 'center', width: '100%'}}
                  value={this.state.dateValue} onChange={this.handleDatePicked}/>
-                <button onClick={this.handleDateChange.bind(this)}> Accept </button>
+                <button style={{marginTop: '10px', marginBottom: '20px'}}onClick={this.handleDateChange.bind(this)}> Accept </button>
               </FormGroup>
             }
 
-           <div style={{width: '100%', marginLeft: '35%'}}>Time Length: {Math.floor(this.state.value / 60)} Hours   {this.state.value % 60} Mins
+           <div style={{width: '100%', marginLeft: '35%', marginTop: '10px', marginBottom: '10px'}}>Time Length: {Math.floor(this.state.value / 60)} Hours   {this.state.value % 60} Mins
              <h3>
                <input style={{width: '28%'}} type="range" name="meetingLength" min="30" max="600" value={this.state.value} onChange={(e => this.setState({value: e.target.value}))}></input>
              </h3>
