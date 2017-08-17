@@ -38,7 +38,8 @@ class EditEvent extends React.Component {
       toggleDate: false,
       toggleLocation: false,
       dateValue: value,
-      formattedValue: ''
+      formattedValue: '',
+      value: 30
     };
 
     this.openModal = this.openModal.bind(this);
@@ -157,13 +158,19 @@ class EditEvent extends React.Component {
                 .toString().split(' ').slice(0, 4).join(' ')}
               </h3>
               </div>
-            :
-              <FormGroup style={{textAlign: 'center', width: '35%', marginLeft: '32%',}}>
+            : 
+              <FormGroup style={{textAlign: 'center', width: '35%', marginLeft: '32%'}}>
                 <DatePicker clearButtonElement="" id="datePicker" style={{height: '25px', fontSize: '18px', textAlign: 'center', width: '100%'}}
                  value={this.state.dateValue} onChange={this.handleDatePicked}/>
                 <button onClick={this.handleDateChange.bind(this)}> Accept </button>
               </FormGroup>
             }
+
+           <div style={{width: '100%', marginLeft: '35%'}}>Time Length: {Math.floor(this.state.value / 60)} Hours   {this.state.value % 60} Mins
+             <h3>
+               <input style={{width: '28%'}} type="range" name="meetingLength" min="30" max="600" value={this.state.value} onChange={(e => this.setState({value: e.target.value}))}></input>
+             </h3>
+           </div>
 
             <div>
               <Columns columns="2">
@@ -185,8 +192,5 @@ class EditEvent extends React.Component {
     );
   }
 }
-
-
-
 
 export default EditEvent;
