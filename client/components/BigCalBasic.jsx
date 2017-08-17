@@ -105,6 +105,8 @@ class BigCalBasic extends React.Component{
     return (
       <div className="calendar">
         <AddEvent
+          closeDisplayModal={this.closeDisplayModal.bind(this)}
+          closeModal={this.closeModal.bind(this)}
           handleFinish={this.props.handleFinish}
           handleCreateClick={this.props.handleCreateClick}
           user={this.props.user}

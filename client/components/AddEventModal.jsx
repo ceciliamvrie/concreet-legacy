@@ -72,9 +72,6 @@ class AddEventModal extends React.Component {
           <span><h4>Time Length:</h4> {Math.floor(this.state.value / 60)} Hours   {this.state.value % 60} Mins</span>
           <input type="range" name="meetingLength" min="30" max="600" value={this.state.value} onChange={(e => this.setState({value: e.target.value}))}></input>
           <input type="text" name="location" placeholder="Location"></input>
-          {
-            this.state.topCreateSelected ? <input type="text" name="date" placeholder="MM/DD/YYYY"></input> : null
-          }
           <button className="createEventButton" onClick={this.props.close}>Create event</button>
         </form>
       </div>
