@@ -1,5 +1,6 @@
 
 import React from 'react';
+import Iframe from 'react-iframe';
 
 class Map extends React.Component {
   constructor(props) {
@@ -12,7 +13,7 @@ class Map extends React.Component {
 
   render() {
     return (
-      <iframe
+      <Iframe
         width="485px"
         height="350px"
         frameborder="0" style="border:0"
