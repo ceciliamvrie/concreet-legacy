@@ -17,8 +17,10 @@ class Map extends React.Component {
         height="350px"
         frameborder="0" style="border:0"
         async defer
-        src={"https://www.google.com/maps/embed/v1/place?key=AIzaSyCMOEDp5TLmM37tCpw9i-ERmpU2kqhEMJg&q=" + this.state.location} allowfullscreen>
+        src={"https://www.google.com/maps/embed/v1/place?key=AIzaSyCMOEDp5TLmM37tCpw9i-ERmpU2kqhEMJg&q=" + this.state.location} allowFullScreen>
       </iframe>
     );
   }
 }
+
+export default Map;
