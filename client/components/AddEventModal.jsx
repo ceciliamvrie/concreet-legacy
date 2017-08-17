@@ -69,8 +69,11 @@ class AddEventModal extends React.Component {
       <div className="addevent">
         <form onSubmit={this.handleEventSubmit.bind(this)}>
           <input type="text" name="title" placeholder="Meeting Title"></input>
-          <span><h4>Time Length:</h4> {Math.floor(this.state.value / 60)} Hours   {this.state.value % 60} Mins</span>
-          <input type="range" name="meetingLength" min="30" max="600" value={this.state.value} onChange={(e => this.setState({value: e.target.value}))}></input>
+          <div style={{width: '100%'}}>Time Length: {Math.floor(this.state.value / 60)} Hours   {this.state.value % 60} Mins
+            <h3>
+              <input type="range" name="meetingLength" min="30" max="600" value={this.state.value} onChange={(e => this.setState({value: e.target.value}))}></input>
+            </h3>
+          </div>
           <input type="text" name="location" placeholder="Location"></input>
           <button className="createEventButton" onClick={this.props.close}>Create event</button>
         </form>
