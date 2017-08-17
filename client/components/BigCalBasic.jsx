@@ -28,7 +28,8 @@ class BigCalBasic extends React.Component{
       selectedDate: undefined,
       eventDateTime: undefined,
       eventTitle: '',
-      meetingLength: 0
+      meetingLength: 0,
+      location: ''
     }
 
     this.renderEventsToCalendar();
@@ -141,6 +142,7 @@ class BigCalBasic extends React.Component{
         selectedDate={this.state.selectedDate}
         getEventDateTime={this.getEventDateTime.bind(this)}
         eventTitle={this.state.eventTitle}
+        location={this.state.location}
         selectedContacts={this.props.selectedContacts}
         selectedGroups={this.props.selectedGroups}
         meetingLength={this.state.meetingLength}
