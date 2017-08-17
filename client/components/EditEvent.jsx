@@ -7,6 +7,7 @@ import events from './events';
 import findFreeTimes from '../models/findFreeTimes.js';
 import EditEventModal from './EditEventModal.jsx';
 import DatePicker from "react-bootstrap-date-picker";
+import FormGroup from 'react-bootstrap/lib/FormGroup';
 
 const customStyles = {
   content : {
@@ -35,6 +36,7 @@ class EditEvent extends React.Component {
       modalIsOpen: true,
       attendees: this.props.eventPicked.attendees,
       toggleTitle: false,
+      toggleDate: false,
       toggleLocation: false,
       dateValue: value,
       formattedValue: ''
@@ -102,10 +104,21 @@ class EditEvent extends React.Component {
     })
   }
 
+  editDate() {
+    this.setState({
+      toggleDate: !this.state.toggleDate
+    })
+  }
+
   handleTitleChange(e) {
     e.preventDefault();
     this.editTitle()
     console.log('title changed', e.target.title.value);
+  }
+
+  handleDateChange() {
+    this.editDate()
+    console.log('date changed', this.state.formattedValue, this.state.dateValue);
   }
 
   render() {
@@ -130,22 +143,28 @@ class EditEvent extends React.Component {
                 <input type="text" className="titleEdit" name="title" placeholder={this.props.eventPicked.summary}/>
                 <button> Accept </button>
               </form>
-               :
-                <h2 className="modalTitle">
-                  <i onClick={this.editTitle.bind(this)} className="fa fa-pencil fa-fw" aria-hidden="true"></i>
-                   {this.props.eventPicked.summary}
-                </h2>
-              }
+            :
+              <h2 className="modalTitle">
+                <i onClick={this.editTitle.bind(this)} className="fa fa-pencil fa-fw" aria-hidden="true"></i>
+                 {this.props.eventPicked.summary}
+              </h2>
+            }
 
-            <h3 className="modalTitle"> When: {this.props.eventPicked.start
-              .toString().split(' ').slice(0, 4).join(' ')}
-            </h3>
-            <p style={{width: '100%', textAlign: 'center'}}>asdfsdf
-              <div calendarPlacement="top" id="datePickerDiv" style={{textAlign: 'center'}}>
-                <DatePicker clearButtonElement="" id="datePicker" style={{height: '25px', fontSize: '18px', textAlign: 'center', width: '35%'}}
-                 value={this.state.dateValue} onChange={this.handleDatePicked}/>
-               </div>
-             </p>
+            {!this.state.toggleDate ?
+              <div>
+              <h3 className="modalTitle">
+              <i onClick={this.editDate.bind(this)} className="fa fa-pencil fa-fw" aria-hidden="true"></i>
+               When: {this.props.eventPicked.start
+                .toString().split(' ').slice(0, 4).join(' ')}
+              </h3>
+              </div>
+            : 
+              <FormGroup style={{textAlign: 'center', width: '35%', marginLeft: '32%',}}>
+                <DatePicker clearButtonElement="" id="datePicker" style={{height: '25px', fontSize: '18px', textAlign: 'center', width: '100%'}}
+                 value={this.state.dateValue} onChange={this.handleDatePicked}/>  
+                <button onClick={this.handleDateChange.bind(this)}> Accept </button>
+              </FormGroup>
+            }
 
             <div>
               <Columns columns="2">
@@ -160,7 +179,6 @@ class EditEvent extends React.Component {
               <button className="createEventButton" style={{margin: '20px'}}onClick={this.props.toggleEdit}>Cancel</button>
             </div>
           </div>
-
           </Modal>
         {console.log()}
       </div>
@@ -168,5 +186,8 @@ class EditEvent extends React.Component {
     );
   }
 }
+
+
+
 
 export default EditEvent;
