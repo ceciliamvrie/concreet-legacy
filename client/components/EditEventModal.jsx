@@ -69,9 +69,7 @@ class EditEventModal extends React.Component {
       <div className="addevent">
         <form onSubmit={this.handleEventSubmit.bind(this)}>
           <input type="text" style={{width: '300px'}} name="title" value={this.props.title}></input>
-          <label >Meeting length slide picker goes here</label>
-          <button className="createEventButton">Update event</button>
-          <button className="createEventButton" style={{margin: '20px'}}onClick={this.props.toggleEdit}>Cancel</button>
+
         </form>
       </div>
     );
