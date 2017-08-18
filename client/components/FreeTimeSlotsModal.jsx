@@ -70,6 +70,8 @@ class FreeTimeSlotsModal extends React.Component {
                   selectedContacts={this.props.selectedContacts}
                   selectedGroups={this.props.selectedGroups}
                   editedContacts={this.props.editedContacts}
+                  beingEdited={this.props.beingEdited}
+                  updateEditedContacts={this.props.updateEditedContacts}
                   meetingLength={this.props.meetingLength}
                   renderEventsToCalendar = {this.props.renderEventsToCalendar}
                 />
