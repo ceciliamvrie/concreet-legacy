@@ -17,6 +17,9 @@ class SplashLogin extends React.Component {
 				<h1 className="appName">Concreet</h1>
 				<h4 className="tagline">Never miss a meeting again</h4>
 				<a href="/auth/google"><button className="signinButton">Sign in with Google</button></a>
+        <div className="other-sign-in">
+          <a href="/auth/google/other">Sign in with a different account</a>
+        </div>
 				<div>
 					<img className="meetingImage" src={"/images/meeting1.jpg"} />
 				</div>
