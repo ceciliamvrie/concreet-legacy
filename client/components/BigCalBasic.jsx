@@ -176,6 +176,8 @@ class BigCalBasic extends React.Component{
         />}
 
         {this.state.displayViewModal && <ViewEventModal
+          closeModal={this.closeModal.bind(this)}
+          allContacts={this.props.allContacts}
           closeViewModal={this.closeViewModal.bind(this)}
           updateSlotsAndEventInfo={this.updateSlotsAndEventInfo.bind(this)}
           user={this.props.user}

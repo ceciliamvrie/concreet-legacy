@@ -43,6 +43,7 @@ const checkAccessToken = (user, retry, callback) => {
     callback(user);
   }).fail((err) => {
     // if it fails, the token is expired.
+    console.log(' YOU FAILED ')
     console.error(err);
     if (retry) {
       // run refreshToken to make a call to the server and ask for a new accessToken
@@ -68,6 +69,11 @@ const refreshToken = (user, callback) => {
     callback(reauthUser);
   })
 }
+
+// export const deleteEventAjax = (
+
+
+//   )
 
 //general function to make an ajax call. simple refactoring
 const makeAjaxCall = (type, url, accessToken, requestBody, callback) => {
@@ -161,15 +167,16 @@ export const freeBusy = (queryGroup, currentUser, timeMin, timeMax, callback) =>
 
   //IMPORTANT check queryGroup to validate accessTokens
   //returns a checkedQueryGroup
+console.log('AM I HERE ', queryGroup)
   checkQueryGroup(queryGroup, (checkedQueryGroup) => {
     var counter = 0;
-
     // query freeBusy for each member of thr checkedQueryGroup
     for (var member of checkedQueryGroup) {
       var id = member._id;
       var email = member.emailAddress;
       var accessToken = member.accessToken;
       var refreshToken = member.refreshToken;
+      console.log('access token', member.accessToken)
 
       // request body includes the calendar ids of the user for which you want to check free busy times.
       //multiple calendars can be checked at the same time
@@ -205,7 +212,10 @@ export const addEvent = (queryGroup, currentUser, title, timeStart, timeEnd, loc
   //adds all memebers of the queryGroup to the attendee param for the ajax call
   for (var member of queryGroup) {
     var attendee = {
+      id: member._id,
       email: member.emailAddress,
+      accessToken: member.accessToken,
+      refreshToken: member.refreshToken,
       responseStatus: 'needsAction'
     };
     attendees.push(attendee);
@@ -231,11 +241,12 @@ export const addEvent = (queryGroup, currentUser, title, timeStart, timeEnd, loc
     'location': location
   };
 
-  console.log('REQUEST BODY location', requestBody.location);
+  console.log('REQUEST BODY location', requestBody);
 
   let url = `https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events?sendNotifications=true`;
 
   makeAjaxCall('POST', url, accessToken, requestBody, (data) => {
+
     callback(data)
   })
 

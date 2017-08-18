@@ -19,7 +19,6 @@ class TimeSlot extends React.Component {
 	}
 
 	handleClick() {
-
 		// put selected contacts and selected contacts from groups into same array
 		var allContacts = this.props.selectedContacts.slice();
 		this.props.selectedGroups.forEach((group)=> {
@@ -50,7 +49,9 @@ class TimeSlot extends React.Component {
 		this.props.getEventDateTime(selectedDateTime);
 
 		// call add event to create google calendar event for all users
+		console.log(Array.isArray(allContacts))
 		CalendarModel.addEvent(allContacts, this.props.user.user, this.props.eventTitle, selectedDateTime, endTime, this.props.location, (data) => {
+
 			this.props.renderEventsToCalendar();
 		})
 

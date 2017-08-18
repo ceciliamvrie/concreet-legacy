@@ -35,12 +35,17 @@ class EditEvent extends React.Component {
     this.state = {
       modalIsOpen: true,
       attendees: this.props.eventPicked.attendees,
+      datePicked: '',
+      meetingLengthTitle: 'Set Meeting Length',
+      meetingLength: 30,
       toggleTitle: false,
       toggleDate: false,
       toggleLocation: false,
+      toggleMeetLength: false,
+      toggleTime: false,
       dateValue: value,
       formattedValue: '',
-      value: 30
+      checkAvail: true,
     };
 
     this.openModal = this.openModal.bind(this);
@@ -52,15 +57,12 @@ class EditEvent extends React.Component {
   handleDatePicked(dateValue, formattedValue) {
     this.setState({
       dateValue: dateValue, // ISO String, ex: "2016-11-19T12:00:00.000Z"
-      formattedValue: formattedValue // Formatted String, ex: "11/19/2016"
+      formattedValue: formattedValue, // Formatted String, ex: "11/19/2016"
     });
   }
 
   componentDidUpdate(){
-    // Access ISO String and formatted values from the DOM.
-    var hiddenInputElement = document.getElementById("datePicker");
-    console.log(hiddenInputElement.value); // ISO String, ex: "2016-11-19T12:00:00.000Z"
-    console.log(hiddenInputElement.getAttribute('data-formattedvalue')) // Formatted String, ex: "11/19/2016"
+
   }
 
   openModal() {
@@ -79,17 +81,24 @@ class EditEvent extends React.Component {
 
   deleteEvent() {
     // delete event
-    console.log('delete event button clicked');
+    // console.log('delete event button clicked');
+    // CalendarModel.deleteEventAjax(this.props.user.user, function(err, res) {
+    //   //something happens
+    // })
   }
 
   removeAttendee(e) {
     // have this send a confirmation email that they were removed from event
     e.preventDefault()
 
-    var i = e.target.getAttribute('name', this.props.eventPicked.attendees.length)
-
+    var i = e.target.getAttribute('name')
+    console.log('attendees', this.props.eventPicked.attendees)
+    console.log('current selected item', this.props.eventPicked.attendees.splice(i, 1))
+    
     this.setState({
-      attendees: this.props.eventPicked.attendees.splice(i, 1)
+      attendees: this.props.eventPicked.attendees
+    }, () => {
+      console.log('REMAINING ATTENDEES AFTER removed', this.state.attendees)
     })
   }
 
@@ -105,6 +114,18 @@ class EditEvent extends React.Component {
     })
   }
 
+  editMeetLength() {
+    this.setState({
+      toggleMeetLength: !this.state.toggleMeetLength
+    })
+  }
+
+  editTime() {
+    this.setState({
+      toggleTime: !this.state.toggleTime
+    })
+  }
+
   editDate() {
     this.setState({
       toggleDate: !this.state.toggleDate
@@ -114,12 +135,89 @@ class EditEvent extends React.Component {
   handleTitleChange(e) {
     e.preventDefault();
     this.editTitle()
-    console.log('title changed', e.target.title.value);
+    this.props.eventPicked.summary = e.target.title.value
+    console.log('title changed', this.props.eventPicked.summary);
   }
 
   handleDateChange() {
     this.editDate()
-    console.log('date changed', this.state.formattedValue, this.state.dateValue);
+
+    var hiddenInputElement = document.getElementById("datePicker");
+    this.setState({
+      datePicked: hiddenInputElement.getAttribute('data-formattedvalue')
+    }, () => {
+      console.log('date changed', this.state.datePicked)
+    }) 
+  }
+
+  handleMeetLengthChange() {
+    this.editMeetLength()
+    console.log('new meeting length', this.state.meetingLength)
+  }
+
+  handleTimeChange() {
+    this.editTime()
+    console.log('time changed');
+  }
+
+  handleLocationChange(e) {
+    this.editLocation()
+    this.props.eventPicked.location = e.target.location.value
+    console.log('location changed', this.props.eventPicked.location);
+  }
+
+  toggleAvail() {
+
+    var meetingLength = JSON.parse(this.state.meetingLength);
+    var meetingTitle = this.props.eventPicked.summary;
+    let location = this.props.eventPicked.location;
+    var timeMin = moment(this.state.datePicked, "MM/DD/YYYY");
+    var queryInfo = {
+      timeMin: timeMin.toISOString(),
+      timeMax: timeMin.add('1', 'days').toISOString()
+    };
+
+    console.log('CONTACTS BEFORE', contacts)
+    var contacts = []
+    console.log('ATTENDEES', this.props.eventPicked.attendees)
+    var temp = {}
+    // grab unique emails. Right now there are duplicates because of faulty memeber adding process
+    for (var i = 0; i < this.props.eventPicked.attendees.length; i++) {
+      for (var j = 0; j < this.props.allContacts.length; j++) {
+        
+        if (this.props.allContacts[j].emailAddress === this.props.eventPicked.attendees[i].email) {
+          temp[this.props.eventPicked.attendees[i].email] = this.props.allContacts[j] || 'FUDGE'
+        }
+      }
+    }
+
+    for (var member in temp) {
+      contacts.push(temp[member])
+    }
+    console.log('CONTACTS AFTER', contacts)
+    CalendarModel.freeBusy(contacts, this.props.user.user, queryInfo.timeMin, queryInfo.timeMax, (calendars) => {
+      console.log(queryInfo.timeMin, queryInfo.timeMax)
+      // receives back calendars array with each element being an object with a email address as its only property
+      // each property has a value that is an object with a busy property
+      // value of busy property is an array of objects that include start and end property of busy times
+      findFreeTimes.findAvailableSlots(meetingLength, calendars, (freeSlots) => {
+        // passsing back the available slots as well as the selected date in ISO format (queryInfo.timeMin)
+        console.log('got here ok')
+        this.props.updateSlotsAndEventInfo(freeSlots, queryInfo.timeMin, meetingTitle, meetingLength, location)
+      });
+    })
+    this.setState({
+      topCreateSelected: !this.state.topCreateSelected
+    })
+    console.log('check available clicked')
+  }
+
+  update() {
+
+    this.setState({
+      checkAvail: !this.state.checkAvail
+    })
+
   }
 
   render() {
@@ -133,12 +231,10 @@ class EditEvent extends React.Component {
           style={customStyles}
           contentLabel="Time Slots Modal"
         >
-
           <div>
             <div className="modalTitle">
               <button className="createEventButton" onClick={this.deleteEvent}> Delete this Event (*batman voice* it's garbage ) </button>
             </div>
-
             {this.state.toggleTitle ?
               <form onSubmit={this.handleTitleChange.bind(this)}>
                 <input type="text" className="titleEdit" name="title" placeholder={this.props.eventPicked.summary}/>
@@ -153,36 +249,70 @@ class EditEvent extends React.Component {
 
             {!this.state.toggleDate ?
               <div>
-              <h3 className="modalTitle">
-              <i onClick={this.editDate.bind(this)} className="fa fa-pencil fa-fw" aria-hidden="true"></i>
-               When: {this.props.eventPicked.start
-                .toString().split(' ').slice(0, 4).join(' ')}
-              </h3>
+                <h3 className="modalTitle">
+                  <i onClick={this.editDate.bind(this)} className="fa fa-pencil fa-fw" aria-hidden="true"></i>
+                   When: {this.props.eventPicked.start
+                    .toString().split(' ').slice(0, 4).join(' ')}
+                </h3>
               </div>
             : 
-              <FormGroup style={{textAlign: 'center', width: '35%', marginLeft: '32%'}}>
-                <DatePicker clearButtonElement="" id="datePicker" style={{height: '25px', fontSize: '18px', textAlign: 'center', width: '100%'}}
-                 value={this.state.dateValue} onChange={this.handleDatePicked}/>
-                <button style={{marginTop: '10px', marginBottom: '20px'}}onClick={this.handleDateChange.bind(this)}> Accept </button>
-              </FormGroup>
+                <FormGroup style={{textAlign: 'center', width: '35%', marginLeft: '32%'}}>
+                  <DatePicker clearButtonElement="" id="datePicker" style={{height: '25px', fontSize: '18px', textAlign: 'center', width: '100%'}}
+                   name="date" value={this.state.dateValue} onChange={this.handleDatePicked}/>
+                  <button style={{marginTop: '5px', marginBottom: '5px'}} onClick={this.handleDateChange.bind(this)}> Accept </button>
+                </FormGroup>
+            }
+            <div>
+            {this.state.toggleMeetLength ? 
+              <div style={{marginLeft: '10%'}}>Time Length: {Math.floor(this.state.meetingLength / 60)} Hours   {this.state.meetingLength % 60} Mins
+                <h3>
+                  <input style={{marginLeft: '8%', width: '28%'}} type="range" name="meetingLength" min="30" max="600" value={this.state.meetingLength} onChange={(e => this.setState({meetingLength: e.target.value, meetingLengthTitle: e.target.value}))}></input>
+                </h3>
+                <button style={{marginLeft: '16%', marginBottom: '10px'}}onClick={this.handleMeetLengthChange.bind(this)}> Accept </button>
+              </div>
+            :
+              <div>
+                <h3 style={{marginLeft: '38%'}}>
+                  <i onClick={this.editMeetLength.bind(this)} className="fa fa-pencil fa-fw" aria-hidden="true"></i>
+                    Length {Math.floor(this.state.meetingLength / 60)} Hours   {this.state.meetingLength % 60} Mins
+                </h3>
+              </div> 
             }
 
-           <div style={{width: '100%', marginLeft: '35%', marginTop: '10px', marginBottom: '10px'}}>Time Length: {Math.floor(this.state.value / 60)} Hours   {this.state.value % 60} Mins
-             <h3>
-               <input style={{width: '28%'}} type="range" name="meetingLength" min="30" max="600" value={this.state.value} onChange={(e => this.setState({value: e.target.value}))}></input>
-             </h3>
-           </div>
+            {this.state.toggleLocation ? 
+              <div style={{marginLeft: '38%'}}>
+                <form onSubmit={this.handleLocationChange.bind(this)}>
+                  <input type="text" name="location" placeholder={this.props.eventPicked.location}/>
+                  <button style={{marginLeft: '2px', marginBottom: '10px'}}> Accept </button>
+                </form>
+              </div>
+            :
+              <div>
+                <h3 style={{marginLeft: '38%'}}>
+                  <i onClick={this.editLocation.bind(this)} className="fa fa-pencil fa-fw" aria-hidden="true"></i>
+                    {this.props.eventPicked.location}
+                </h3>
+              </div> 
+            }
+
+            </div>
 
             <div>
-              <Columns columns="2">
-                {this.props.eventPicked.attendees.map((atnd, i) =>
-                  <div id="attendee"><i className="fa fa-minus-circle fa-fw" id="minusDelete" aria-hidden="true" onClick={this.removeAttendee.bind(this)} name={i}></i>
-                  {atnd.email}: <label style={{fontStyle: 'italic', fontSize: '14px'}}>{atnd.responseStatus}</label></div>
-                )}
-              </Columns>
+              {this.props.eventPicked.attendees ?
+                <Columns columns="2">
+                  {this.props.eventPicked.attendees.map((atnd, i) =>
+                    <div id="attendee"><i className="fa fa-minus-circle fa-fw" id="minusDelete" aria-hidden="true" onClick={this.removeAttendee.bind(this)} name={i}></i>
+                    {atnd.email}: <label style={{fontStyle: 'italic', fontSize: '14px'}}>{atnd.responseStatus}</label></div>
+                  )}
+                </Columns>
+              : null}
             </div>
             <div style={{textAlign: 'right'}}>
-              <button className="createEventButton">Update event</button>
+              {this.state.checkAvail ? 
+                <button className="createEventButton" onClick={this.toggleAvail.bind(this)}>Check Available Times</button>
+              :  
+                <button className="createEventButton" onClick={this.update.bind(this)}>Update event</button>
+              }
               <button className="createEventButton" style={{margin: '20px'}}onClick={this.props.toggleEdit}>Cancel</button>
             </div>
           </div>
@@ -193,5 +323,7 @@ class EditEvent extends React.Component {
     );
   }
 }
+
+// {this.props.eventPicked.start.toString().split(' ').slice(4, 5).join(' ').slice(0, 5)}
 
 export default EditEvent;
