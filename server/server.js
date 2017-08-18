@@ -40,12 +40,16 @@ app.get('/', (req, res) => {
 });
 
 //Passport's google auth link. Sends API scopes to Google
-app.get('/auth/google', 
+app.get('/auth/google',
 	passport.authenticate('google', { accessType: 'offline', scope: ['https://www.googleapis.com/auth/calendar', 'https://www.googleapis.com/auth/calendar.readonly', 'https://www.googleapis.com/auth/plus.login', 'email'] })
 );
 
-//The Google automatically hits this callback URL (as defined in passport.js) 
-app.get('/auth/google/callback', 
+app.get('/auth/google/other',
+	passport.authenticate('google', { accessType: 'offline', scope: ['https://www.googleapis.com/auth/calendar', 'https://www.googleapis.com/auth/calendar.readonly', 'https://www.googleapis.com/auth/plus.login', 'email'], prompt: 'select_account' })
+);
+
+//The Google automatically hits this callback URL (as defined in passport.js)
+app.get('/auth/google/callback',
   passport.authenticate('google', { failureRedirect: '/' }),
   function(req, res) {
   	res.redirect('/');
@@ -101,4 +105,3 @@ var port = process.env.PORT || 8000;
 app.listen(port, () => {
 	console.log('Open on port: ',port);
 });
-

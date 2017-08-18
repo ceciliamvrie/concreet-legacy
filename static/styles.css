@@ -296,3 +296,13 @@ input:-webkit-autofill {
   margin-top: 20px;
   background: url("loading.gif") center bottom no-repeat;
 }
+
+.other-sign-in {
+  margin-bottom: 20px;
+  margin-top: -10px;
+}
+
+.other-sign-in a {
+  color: white;
+  font-size: 8px;
+}
