@@ -23,6 +23,7 @@ class TimeSlot extends React.Component {
 		var allContacts = [];
 		if (this.props.beingEdited) {
 			allContacts = this.props.editedContacts
+			this.props.editingMode()
 		} else {
 			allContacts = this.props.selectedContacts.slice();
 			this.props.selectedGroups.forEach((group)=> {
@@ -60,13 +61,13 @@ class TimeSlot extends React.Component {
 			CalendarModel.updateEvent(allContacts, this.props.user.user, this.props.eventTitle, selectedDateTime, endTime, this.props.location, eventId, (data) => {
 				this.props.renderEventsToCalendar();
 			})
+		  this.props.editingMode()
 		} else {
 			CalendarModel.addEvent(allContacts, this.props.user.user, this.props.eventTitle, selectedDateTime, endTime, this.props.location, (data) => {
 
 				this.props.renderEventsToCalendar();
 			})
 	  }
-		this.props.updateEditedContacts()
 		this.props.closeModal()
 	}
 

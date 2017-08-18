@@ -123,10 +123,15 @@ class BigCalBasic extends React.Component{
     })
   }
 
-  updateEditedContacts(editedContacts) {
-    console.log('UPDATE CONTACTS EDITED CALLED', this.state.beingEdited)
+  updateEditedContacts(editedContacts, bool) {
     this.setState({
       editedContacts: editedContacts,
+    })
+  }
+
+  editingMode() {
+    console.log('UPDATE CONTACTS EDITED CALLED', this.state.beingEdited)
+    this.setState({
       beingEdited: !this.state.beingEdited
     }, () => {
       console.log('UPDATE AFTER SET STATE IN BIG CAL', this.state.beingEdited)
@@ -188,6 +193,7 @@ class BigCalBasic extends React.Component{
         {this.state.displayModal && <FreeTimeSlotsModal
           editedContacts={this.state.editedContacts}
           beingEdited={this.state.beingEdited}
+          editingMode={this.editingMode.bind(this)}
           updateEditedContacts={this.updateEditedContacts.bind(this)}
           closeModal={this.closeModal.bind(this)}
           user={this.props.user}
@@ -205,6 +211,7 @@ class BigCalBasic extends React.Component{
         />}
 
         {this.state.displayViewModal && <ViewEventModal
+          editingMode={this.editingMode.bind(this)}
           updateEditedContacts={this.updateEditedContacts.bind(this)}
           closeModal={this.closeModal.bind(this)}
           allContacts={this.props.allContacts}
