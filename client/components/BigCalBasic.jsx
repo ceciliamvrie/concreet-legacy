@@ -31,6 +31,7 @@ class BigCalBasic extends React.Component{
       eventTitle: '',
       meetingLength: 0,
       location: '',
+      eventId: '',
       editedContacts: [],
       beingEdited: false
     }
@@ -73,14 +74,15 @@ class BigCalBasic extends React.Component{
     // });
   }
 
-  updateSlotsAndEventInfo(freeSlots, eventDate, eventTitle, eventLength, location) {
+  updateSlotsAndEventInfo(freeSlots, eventDate, eventTitle, eventLength, location, eventId) {
     this.setState({
       availableSlots: freeSlots,
       displayModal: true,
       selectedDate: eventDate,
       eventTitle: eventTitle,
       meetingLength: eventLength,
-      location: location
+      location: location,
+      eventId: eventId
     })
   }
 
@@ -122,9 +124,12 @@ class BigCalBasic extends React.Component{
   }
 
   updateEditedContacts(editedContacts) {
+    console.log('UPDATE CONTACTS EDITED CALLED', this.state.beingEdited)
     this.setState({
       editedContacts: editedContacts,
       beingEdited: !this.state.beingEdited
+    }, () => {
+      console.log('UPDATE AFTER SET STATE IN BIG CAL', this.state.beingEdited)
     })
   }
 
@@ -192,6 +197,7 @@ class BigCalBasic extends React.Component{
           getEventDateTime={this.getEventDateTime.bind(this)}
           eventTitle={this.state.eventTitle}
           location={this.state.location}
+          eventId={this.state.eventId}
           selectedContacts={this.props.selectedContacts}
           selectedGroups={this.props.selectedGroups}
           meetingLength={this.state.meetingLength}
