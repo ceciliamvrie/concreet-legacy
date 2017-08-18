@@ -63,6 +63,7 @@ class CreateDateModal extends React.Component {
 
           <h2 className="modalTitle">Schedule A Date</h2>
           <AddEventModal
+            topCreateSelected={this.props.topCreateSelected}
             user={this.props.user}
             updateSlotsAndEventInfo={this.props.updateSlotsAndEventInfo}
             selectedContacts={this.props.selectedContacts}

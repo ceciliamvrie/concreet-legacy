@@ -19,6 +19,7 @@ class BigCalBasic extends React.Component{
   constructor(props) {
     super(props);
     this.state = {
+      topCreateSelected: false,
       eventPicked: {},
       events: [],
       availableSlots: [],
@@ -50,6 +51,12 @@ class BigCalBasic extends React.Component{
   //     })
   //   // });
   // }
+
+  handleTopCreateSelect() {
+    this.setState({
+      topCreateSelected: !this.state.topCreateSelected
+    })
+  }
 
   renderEventsToCalendar() {
     // CalendarModel.getCalendarList(this.props.user.user, (currentUser, calendarList) => {
@@ -105,6 +112,7 @@ class BigCalBasic extends React.Component{
     return (
       <div className="calendar">
         <AddEvent
+          topCreateSelected={this.handleTopCreateSelect.bind(this)}
           closeDisplayModal={this.closeDisplayModal.bind(this)}
           closeModal={this.closeModal.bind(this)}
           handleFinish={this.props.handleFinish}
@@ -137,6 +145,7 @@ class BigCalBasic extends React.Component{
         />
 
         {this.state.displayPickDateModal ? <CreateDateModal
+        topCreateSelected={this.state.topCreateSelected}
         closeModal={this.closeModal.bind(this)}
         updateSlotsAndEventInfo={this.updateSlotsAndEventInfo.bind(this)}
         user={this.props.user}

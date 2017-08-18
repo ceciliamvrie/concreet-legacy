@@ -40,6 +40,7 @@ class AddEvent extends React.Component {
 
   handleEventSubmit(e) {
     e.preventDefault();
+    this.props.topCreateSelected()
     console.log(this.props)
     var meetingLength = JSON.parse(e.target.meetingLength.value)
     var meetingTitle = e.target.title.value
@@ -79,10 +80,8 @@ class AddEvent extends React.Component {
   render() {
     return (
       <div className="addevent">
-        {
-          this.state.topCreateSelected ?
             <form onSubmit={this.handleEventSubmit.bind(this)}>
-              <div className="containe">
+              {/* <div className="containe">
                 <input type="text" name="title" placeholder="Meeting Title"></input>
                 <input type="text" name="location" placeholder="Location"></input>
               </div>
@@ -96,10 +95,9 @@ class AddEvent extends React.Component {
                 </p>
               <div className="containe">
                 <input type="range" name="meetingLength" min="30" max="600" value={this.state.value} onChange={(e => this.setState({value: e.target.value}))}></input>
-              </div>
-                <button className="createEventButton" onClick={this.handleIt.bind(this)}>Create It!</button>
-            </form> : <button className="createEventButton" onClick={this.handleClick.bind(this)}>Create event</button>
-        }
+              </div> */}
+                <button className="createEventButton" onClick={this.handleIt.bind(this)}>Create Event</button>
+            </form>
       </div>
 
     );
