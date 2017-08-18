@@ -90,6 +90,12 @@ class BigCalBasic extends React.Component{
   }
 
   closeDisplayModal() {
+    if (this.state.topCreateSelected) {
+      this.setState({
+        displayModal: !this.state.displayModal,
+        topCreateSelected: !this.state.topCreateSelected
+      })
+    }
     this.setState({
       displayModal: !this.state.displayModal,
     })
@@ -97,6 +103,11 @@ class BigCalBasic extends React.Component{
 
   closeModal() {
     console.log('inside closeModal')
+    if (this.state.topCreateSelected) {
+      this.setState({
+        topCreateSelected: !this.state.topCreateSelected
+      })
+    }
     this.setState({
       displayPickDateModal: !this.state.displayPickDateModal,
     })
