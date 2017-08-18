@@ -11,7 +11,6 @@ class AddEventModal extends React.Component {
     super(props);
 
     this.state = {
-      topCreateSelected: false,
       value: 30
     }
   }
@@ -34,7 +33,7 @@ class AddEventModal extends React.Component {
     var meetingTitle = e.target.title.value
     var selectedTime = this.state.topCreateSelected ? e.target.title.value : this.props.date
     let location = e.target.location.value;
-    var timeMin = moment(this.props.date, "MM/DD/YYYY");
+    var timeMin = moment(this.props.topCreateSelected ? e.target.meetingDate.value : this.props.date, "MM/DD/YYYY");
     var queryInfo = {
       timeMin: timeMin.toISOString(),
       timeMax: timeMin.add('1', 'days').toISOString()
@@ -75,6 +74,9 @@ class AddEventModal extends React.Component {
             </h3>
           </div>
           <input type="text" name="location" placeholder="Location"></input>
+          {
+            this.props.topCreateSelected && <input type="text" name="meetingDate" placeholder="Meeting Date"></input>
+          }
           <button className="createEventButton" onClick={this.props.close}>Create event</button>
         </form>
       </div>
