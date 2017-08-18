@@ -102,6 +102,7 @@ class ViewEventModal extends React.Component {
           </div>:
 
           <EditEvent
+          updateEditedContacts={this.props.updateEditedContacts}
           allContacts={this.props.allContacts}
           user={this.props.user}
           toggleEdit={this.toggleEditEvent.bind(this)}

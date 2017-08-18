@@ -30,7 +30,8 @@ class BigCalBasic extends React.Component{
       eventDateTime: undefined,
       eventTitle: '',
       meetingLength: 0,
-      location: ''
+      location: '',
+      editedContacts: []
     }
 
     this.renderEventsToCalendar();
@@ -119,6 +120,12 @@ class BigCalBasic extends React.Component{
     })
   }
 
+  updateEditedContacts(editedContacts) {
+    this.setState({
+      editedContacts: editedContacts
+    })
+  }
+
   render(){
     return (
       <div className="calendar">
@@ -172,6 +179,7 @@ class BigCalBasic extends React.Component{
         /> : null}
 
         {this.state.displayModal && <FreeTimeSlotsModal
+          editedContacts={this.state.editedContacts}
           closeModal={this.closeModal.bind(this)}
           user={this.props.user}
           closeDisplayModal={this.closeDisplayModal.bind(this)}
@@ -187,6 +195,7 @@ class BigCalBasic extends React.Component{
         />}
 
         {this.state.displayViewModal && <ViewEventModal
+          updateEditedContacts={this.updateEditedContacts.bind(this)}
           closeModal={this.closeModal.bind(this)}
           allContacts={this.props.allContacts}
           closeViewModal={this.closeViewModal.bind(this)}

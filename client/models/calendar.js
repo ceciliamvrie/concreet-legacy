@@ -19,6 +19,7 @@ const checkQueryGroup = (queryGroup, callback) => {
       checkedQueryGroup.push(reauthUser)
       if (checkedQueryGroup.length === queryGroup.length) {
         //returns checkedQueryGroup once all members have been returned
+        console.log('CHECK QUERY GROUP FUNCTION', checkedQueryGroup)
         callback(checkedQueryGroup);
       }
     });
@@ -176,7 +177,7 @@ console.log('AM I HERE ', queryGroup)
       var email = member.emailAddress;
       var accessToken = member.accessToken;
       var refreshToken = member.refreshToken;
-      console.log('access token', member.accessToken)
+      console.log('access token', member.emailAddress, member.accessToken)
 
       // request body includes the calendar ids of the user for which you want to check free busy times.
       //multiple calendars can be checked at the same time

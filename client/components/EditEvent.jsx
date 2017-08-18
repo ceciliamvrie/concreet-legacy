@@ -195,6 +195,7 @@ class EditEvent extends React.Component {
       contacts.push(temp[member])
     }
     console.log('CONTACTS AFTER', contacts)
+    this.props.updateEditedContacts(contacts)
     CalendarModel.freeBusy(contacts, this.props.user.user, queryInfo.timeMin, queryInfo.timeMax, (calendars) => {
       console.log(queryInfo.timeMin, queryInfo.timeMax)
       // receives back calendars array with each element being an object with a email address as its only property
@@ -203,7 +204,7 @@ class EditEvent extends React.Component {
       findFreeTimes.findAvailableSlots(meetingLength, calendars, (freeSlots) => {
         // passsing back the available slots as well as the selected date in ISO format (queryInfo.timeMin)
         console.log('got here ok')
-        this.props.updateSlotsAndEventInfo(freeSlots, queryInfo.timeMin, meetingTitle, meetingLength, location)
+        this.props.updateSlotsAndEventInfo(freeSlots, queryInfo.timeMin, meetingTitle, meetingLength, location, contacts)
       });
     })
     this.setState({
