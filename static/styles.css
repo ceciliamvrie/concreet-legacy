@@ -8,6 +8,11 @@ body {
     overflow: hidden;
 }
 
+.containe {
+  display: block;
+  text-align: center;
+}
+
 .dashboard {
     height: 100%;
     text-align: center;
@@ -193,20 +198,35 @@ body {
 
 .addevent {
     font-family: 'Catamaran', sans-serif;
+    text-align: center;
 }
 
+#dd {
+  margin-top: -20px;
+}
+
+.spandaman {
+  margin-bottom: -30px;
+  font-weight: 700;
+  line-height: 0;
+}
+
+.time {
+  line-height: 0;
+}
 
 .addevent input {
-    background-color: white;
-    border: 1px solid black;
-    color: rgba(44, 62, 80,1.0);
-    padding: 10px 0px 10px 10px;
-    margin: 0px 5px 20px 0px;
-    text-align: left;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 14px;
-    text-indent: 0px;
+  background-color: white;
+  border: 1px solid black;
+  color: rgba(44, 62, 80,1.0);
+  padding: 10px 0px 10px 10px;
+  margin: 0px 5px 10px 0px;
+  text-align: left;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  text-indent: 0px;
+  line-height: -10px;
 }
 
 /* Gets rid of yellow autofill in input boxes done by Chrome browser */

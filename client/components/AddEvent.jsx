@@ -82,12 +82,22 @@ class AddEvent extends React.Component {
         {
           this.state.topCreateSelected ?
             <form onSubmit={this.handleEventSubmit.bind(this)}>
-              <input type="text" name="title" placeholder="Meeting Title"></input>
-              <span><h4>Time Length:</h4> {Math.floor(this.state.value / 60)} Hours   {this.state.value % 60} Mins</span>
-              <input type="range" name="meetingLength" min="30" max="600" value={this.state.value} onChange={(e => this.setState({value: e.target.value}))}></input>
-              <input type="text" name="location" placeholder="Location"></input>
-              <input type="text" name="date" placeholder="MM/DD/YYYY"></input>
-              <button className="createEventButton" onClick={this.handleIt.bind(this)}>Create It!</button>
+              <div className="containe">
+                <input type="text" name="title" placeholder="Meeting Title"></input>
+                <input type="text" name="location" placeholder="Location"></input>
+              </div>
+              <div className="containe">
+                <input id="dd" type="text" name="date" placeholder="MM/DD/YYYY"></input>
+              </div>
+                <p>
+                  <span className="spandaman">Time Length:
+                  <span className="time"> {Math.floor(this.state.value / 60)} Hours   {this.state.value % 60} Mins</span>
+                  </span>
+                </p>
+              <div className="containe">
+                <input type="range" name="meetingLength" min="30" max="600" value={this.state.value} onChange={(e => this.setState({value: e.target.value}))}></input>
+              </div>
+                <button className="createEventButton" onClick={this.handleIt.bind(this)}>Create It!</button>
             </form> : <button className="createEventButton" onClick={this.handleClick.bind(this)}>Create event</button>
         }
       </div>
