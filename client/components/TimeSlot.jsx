@@ -22,7 +22,7 @@ class TimeSlot extends React.Component {
 		// put selected contacts and selected contacts from groups into same array
 		console.log('TIME SLOT CONTACTS PARAM', this.props.editedContacts)
 		var allContacts = [];
-		if (this.props.editedContacts) {
+		if (this.props.beingEdited) {
 			allContacts = this.props.editedContacts
 			console.log('LKAJSDLFKJASLDKFJ IM INSIDE THE EDITED CONTACTS!!!')
 		} else {
@@ -60,7 +60,7 @@ class TimeSlot extends React.Component {
 
 			this.props.renderEventsToCalendar();
 		})
-
+		this.props.updateEditedContacts()
 		this.props.closeModal()
 	}
 
