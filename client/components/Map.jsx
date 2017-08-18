@@ -6,7 +6,6 @@ import API_KEY from '../gmaps_config.js';
 class Map extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
       location: this.props.location
     }
