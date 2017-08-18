@@ -81,7 +81,7 @@ class ViewEventModal extends React.Component {
             <h2 className="modalTitle">{this.props.eventPicked.summary}</h2>
 
             <h3 className="modalTitle"> When: {this.props.eventPicked.start
-              .toString().split(' ').slice(0, 4).join(' ')}
+              .toString().split(' ').slice(0, 4).join(' ')} at {this.props.eventTime}
             </h3>
 
 
@@ -96,25 +96,31 @@ class ViewEventModal extends React.Component {
               : null}
             </div>
 
-            <div className="modalTitle" id="event-location-map">
-              <Map location={this.props.eventPicked.location} />
-             </div>
-          </div>:
+              <div className="modalTitle" id="event-location-map">
+                <Map location={this.props.eventPicked.location} />
+              </div>
+            </div>
+
+          :
 
           <EditEvent
           updateEditedContacts={this.props.updateEditedContacts}
           allContacts={this.props.allContacts}
           user={this.props.user}
+          eventTime={this.state.eventTime}
           toggleEdit={this.toggleEditEvent.bind(this)}
           closeModal={this.closeModal.bind(this)}
           eventPicked={this.props.eventPicked}
           updateSlotsAndEventInfo={this.props.updateSlotsAndEventInfo}
           editingMode={this.props.editingMode}
+          eventTime={this.props.eventTime}
+          renderEventsToCalendar = {this.props.renderEventsToCalendar}
+          closeViewModal={this.props.closeViewModal}
           />
         }
 
         {
-          console.log(this.props.eventPicked.id, typeof this.props.eventPicked.id, this.props.eventPicked.id === "5p57hj9aop4gps3ogikar1tf3c")
+          console.log(this.props.eventPicked)
         }
         </Modal>
       </div>
