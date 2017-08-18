@@ -19,18 +19,23 @@ class TimeSlot extends React.Component {
 	}
 
 	handleClick() {
-
 		// put selected contacts and selected contacts from groups into same array
-		var allContacts = this.props.selectedContacts.slice();
-		this.props.selectedGroups.forEach((group)=> {
-		  // console.log('group: ', group)
-		  group.contacts.forEach((contact) => {
-		    if (!this.checkExist(allContacts, contact)) {
-		      // console.log('Contact: ', allContacts)
-		      allContacts.push(contact);
-		    }
-		  })
-		})
+		console.log('TIME SLOT CONTACTS PARAM', this.props.editedContacts)
+		var allContacts = [];
+		if (this.props.editedContacts) {
+			allContacts = this.props.editedContacts
+			console.log('LKAJSDLFKJASLDKFJ IM INSIDE THE EDITED CONTACTS!!!')
+		} else {
+			allContacts = this.props.selectedContacts.slice();
+			this.props.selectedGroups.forEach((group)=> {
+			  group.contacts.forEach((contact) => {
+			    if (!this.checkExist(allContacts, contact)) {
+			      // console.log('Contact: ', allContacts)
+			      allContacts.push(contact);
+			    }
+			  })
+			})
+		}
 
 		// get the selected date in ISO format without any time aspect
 		var selectedDate = this.props.selectedDate.split('T')[0]
@@ -50,7 +55,9 @@ class TimeSlot extends React.Component {
 		this.props.getEventDateTime(selectedDateTime);
 
 		// call add event to create google calendar event for all users
+		console.log(Array.isArray(allContacts))
 		CalendarModel.addEvent(allContacts, this.props.user.user, this.props.eventTitle, selectedDateTime, endTime, this.props.location, (data) => {
+
 			this.props.renderEventsToCalendar();
 		})
 

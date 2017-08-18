@@ -86,12 +86,14 @@ class ViewEventModal extends React.Component {
 
 
             <div>
-              <Columns columns="2">
-                {this.props.eventPicked.attendees.map((atnd, i) =>
-                  <div id="attendee" i={i}>
-                  {atnd.email}: <label style={{fontStyle: 'italic', fontSize: '14px'}}>{atnd.responseStatus}</label></div>
-                )}
-              </Columns>
+              {this.props.eventPicked.attendees ?
+                <Columns columns="2">
+                  {this.props.eventPicked.attendees.map((atnd) =>
+                    <div id="attendee">
+                    {atnd.email}: <label style={{fontStyle: 'italic', fontSize: '14px'}}>{atnd.responseStatus}</label></div>
+                  )}
+                </Columns>
+              : null}
             </div>
 
             <div className="modalTitle" id="event-location-map">
@@ -100,6 +102,9 @@ class ViewEventModal extends React.Component {
           </div>:
 
           <EditEvent
+          updateEditedContacts={this.props.updateEditedContacts}
+          allContacts={this.props.allContacts}
+          user={this.props.user}
           toggleEdit={this.toggleEditEvent.bind(this)}
           closeModal={this.closeModal.bind(this)}
           eventPicked={this.props.eventPicked}
@@ -108,7 +113,7 @@ class ViewEventModal extends React.Component {
         }
 
         {
-          console.log(this.props.selectedDate)
+          console.log(this.props.allContacts)
         }
         </Modal>
       </div>
