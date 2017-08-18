@@ -44,8 +44,10 @@ class EditEvent extends React.Component {
       toggleMeetLength: false,
       toggleTime: false,
       dateValue: value,
+      date: this.props.eventPicked.start.toString().split(' ').slice(0, 4).join(' '),
       formattedValue: '',
       checkAvail: true,
+      eventTime: this.props.eventTime
     };
 
     this.openModal = this.openModal.bind(this);
@@ -80,11 +82,12 @@ class EditEvent extends React.Component {
   }
 
   deleteEvent() {
-    // delete event
-    // console.log('delete event button clicked');
-    // CalendarModel.deleteEventAjax(this.props.user.user, function(err, res) {
-    //   //something happens
-    // })
+    console.log('delete event button clicked');
+    CalendarModel.deleteEventAjax(this.props.eventPicked.id, this.props.user.user, (err, res) => {
+      this.props.renderEventsToCalendar();
+      console.log('IM THE FRIGGIN KING OF THE WORLD!!!!! ')
+      this.props.closeViewModal();
+    })
   }
 
   removeAttendee(e) {
@@ -115,6 +118,25 @@ class EditEvent extends React.Component {
   }
 
   editMeetLength() {
+
+    // var time = this.props.eventPicked.start.toString().split(' ').slice(4, 5).join(' ')
+    // var newTime = time.split('')
+    // var hour = newTime.splice(0, 2).join('')
+    // newTime = newTime.slice(0, 3)
+
+    // var final = ''
+    // if (Number(hour) > 12) {
+    //   var t = Number(hour) - 12
+    //   final = t + newTime.join('') + 'am'
+    // } else {
+    //   final = hour + newTime.join('') + 'pm'
+    // }
+    // this.setState({
+    //   eventTime: final
+    // }, () => {
+    //   console.log('eventtime is ', this.state.eventTime)
+    // })
+
     this.setState({
       toggleMeetLength: !this.state.toggleMeetLength
     })
@@ -144,7 +166,8 @@ class EditEvent extends React.Component {
 
     var hiddenInputElement = document.getElementById("datePicker");
     this.setState({
-      datePicked: hiddenInputElement.getAttribute('data-formattedvalue')
+      datePicked: hiddenInputElement.getAttribute('data-formattedvalue'),
+      date: hiddenInputElement.getAttribute('data-formattedvalue')
     }, () => {
       console.log('date changed', this.state.datePicked)
     }) 
@@ -180,11 +203,13 @@ class EditEvent extends React.Component {
     var contacts = []
     var temp = {}
     // grab unique emails. Right now there are duplicates because of faulty memeber adding process
-    for (var i = 0; i < this.props.eventPicked.attendees.length; i++) {
-      for (var j = 0; j < this.props.allContacts.length; j++) {
-        
-        if (this.props.allContacts[j].emailAddress === this.props.eventPicked.attendees[i].email) {
-          temp[this.props.eventPicked.attendees[i].email] = this.props.allContacts[j] || 'FUDGE'
+    if (this.props.eventPicked.attendees) {
+      for (var i = 0; i < this.props.eventPicked.attendees.length; i++) {
+        for (var j = 0; j < this.props.allContacts.length; j++) {
+          
+          if (this.props.allContacts[j].emailAddress === this.props.eventPicked.attendees[i].email) {
+            temp[this.props.eventPicked.attendees[i].email] = this.props.allContacts[j] || 'FUDGE'
+          }
         }
       }
     }
@@ -232,7 +257,7 @@ class EditEvent extends React.Component {
         >
           <div>
             <div className="modalTitle">
-              <button className="createEventButton" onClick={this.deleteEvent}> Delete this Event (*batman voice* it's garbage ) </button>
+              <button className="createEventButton" onClick={this.deleteEvent.bind(this)}> Delete this Event (*batman voice* it's garbage ) </button>
             </div>
             {this.state.toggleTitle ?
               <form onSubmit={this.handleTitleChange.bind(this)}>
@@ -250,8 +275,7 @@ class EditEvent extends React.Component {
               <div>
                 <h3 className="modalTitle">
                   <i onClick={this.editDate.bind(this)} className="fa fa-pencil fa-fw" aria-hidden="true"></i>
-                   When: {this.props.eventPicked.start
-                    .toString().split(' ').slice(0, 4).join(' ')}
+                   When: {this.state.date}
                 </h3>
               </div>
             : 
@@ -273,7 +297,7 @@ class EditEvent extends React.Component {
               <div>
                 <h3 style={{marginLeft: '38%'}}>
                   <i onClick={this.editMeetLength.bind(this)} className="fa fa-pencil fa-fw" aria-hidden="true"></i>
-                    Length {Math.floor(this.state.meetingLength / 60)} Hours   {this.state.meetingLength % 60} Mins
+                    Set Length: {Math.floor(this.state.meetingLength / 60)} Hours   {this.state.meetingLength % 60} Mins
                 </h3>
               </div> 
             }
@@ -281,7 +305,7 @@ class EditEvent extends React.Component {
             {this.state.toggleLocation ? 
               <div style={{marginLeft: '38%'}}>
                 <form onSubmit={this.handleLocationChange.bind(this)}>
-                  <input type="text" name="location" placeholder={this.props.eventPicked.location}/>
+                  <input type="text" name="location" placeholder={this.props.eventPicked.location || 'Set Location'}/>
                   <button style={{marginLeft: '2px', marginBottom: '10px'}}> Accept </button>
                 </form>
               </div>
@@ -289,7 +313,7 @@ class EditEvent extends React.Component {
               <div>
                 <h3 style={{marginLeft: '38%'}}>
                   <i onClick={this.editLocation.bind(this)} className="fa fa-pencil fa-fw" aria-hidden="true"></i>
-                    {this.props.eventPicked.location}
+                    {this.props.eventPicked.location || 'No Location For This Event'}
                 </h3>
               </div> 
             }

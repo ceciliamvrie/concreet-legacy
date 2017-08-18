@@ -33,7 +33,8 @@ class BigCalBasic extends React.Component{
       location: '',
       eventId: '',
       editedContacts: [],
-      beingEdited: false
+      beingEdited: false,
+      eventTime: ''
     }
 
     this.renderEventsToCalendar();
@@ -167,9 +168,25 @@ class BigCalBasic extends React.Component{
             }
           }
           onSelectEvent={event => {
+            var time = event.start.toString().split(' ').slice(4, 5).join(' ')
+            var newTime = time.split('')
+            var hour = newTime.splice(0, 2).join('')
+            newTime = newTime.slice(0, 3)
+
+            var final = ''
+            if (Number(hour) > 12) {
+              var t = Number(hour) - 12
+              final = t + newTime.join('') + 'am'
+            } else {
+              final = hour + newTime.join('') + 'pm'
+            }
+  
             this.setState({
               displayViewModal: !this.state.displayViewModal,
-              eventPicked: event
+              eventPicked: event,
+              eventTime: final
+            }, () => {
+              console.log('eventtime is ', this.state.eventTime)
             });
           }}
         />

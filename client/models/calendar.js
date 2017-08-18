@@ -71,10 +71,27 @@ const refreshToken = (user, callback) => {
   })
 }
 
-// export const deleteEventAjax = (
+export const deleteEventAjax = (eventId, currentUser, callback) => {
 
-
-//   )
+  var accessToken = currentUser.accessToken;
+  var calendarId = currentUser.emailAddress;
+  let url = `https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events/${eventId}?sendNotifications=true`;
+  
+  $.ajax({
+    type: 'DELETE',
+    url: url,
+    headers: {Authorization: `Bearer ${accessToken}`},
+    contentType: 'application/json',
+    success: function(data) {
+      console.log('successful call to ' + url, 'DELETED DELETED DELETED')
+      callback(data);
+    },
+    error: function(err) {
+      console.log('error call to ' + url)
+      callback(err);
+    }
+  });
+}
 
 //general function to make an ajax call. simple refactoring
 const makeAjaxCall = (type, url, accessToken, requestBody, callback) => {
