@@ -177,9 +177,7 @@ class EditEvent extends React.Component {
       timeMax: timeMin.add('1', 'days').toISOString()
     };
 
-    console.log('CONTACTS BEFORE', contacts)
     var contacts = []
-    console.log('ATTENDEES', this.props.eventPicked.attendees)
     var temp = {}
     // grab unique emails. Right now there are duplicates because of faulty memeber adding process
     for (var i = 0; i < this.props.eventPicked.attendees.length; i++) {
@@ -194,8 +192,8 @@ class EditEvent extends React.Component {
     for (var member in temp) {
       contacts.push(temp[member])
     }
-    console.log('CONTACTS AFTER', contacts)
     this.props.updateEditedContacts(contacts)
+
     CalendarModel.freeBusy(contacts, this.props.user.user, queryInfo.timeMin, queryInfo.timeMax, (calendars) => {
       console.log(queryInfo.timeMin, queryInfo.timeMax)
       // receives back calendars array with each element being an object with a email address as its only property
@@ -203,8 +201,7 @@ class EditEvent extends React.Component {
       // value of busy property is an array of objects that include start and end property of busy times
       findFreeTimes.findAvailableSlots(meetingLength, calendars, (freeSlots) => {
         // passsing back the available slots as well as the selected date in ISO format (queryInfo.timeMin)
-        console.log('got here ok')
-        this.props.updateSlotsAndEventInfo(freeSlots, queryInfo.timeMin, meetingTitle, meetingLength, location, contacts)
+        this.props.updateSlotsAndEventInfo(freeSlots, queryInfo.timeMin, meetingTitle, meetingLength, location, this.props.eventPicked.id)
       });
     })
     this.setState({

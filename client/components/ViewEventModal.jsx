@@ -113,7 +113,7 @@ class ViewEventModal extends React.Component {
         }
 
         {
-          console.log(this.props.allContacts)
+          console.log(this.props.eventPicked.id, typeof this.props.eventPicked.id, this.props.eventPicked.id === "5p57hj9aop4gps3ogikar1tf3c")
         }
         </Modal>
       </div>

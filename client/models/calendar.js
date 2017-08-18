@@ -252,3 +252,51 @@ export const addEvent = (queryGroup, currentUser, title, timeStart, timeEnd, loc
   })
 
 }
+
+export const updateEvent = (queryGroup, currentUser, title, timeStart, timeEnd, location, eventId, callback) => {
+  var accessToken = currentUser.accessToken;
+  var calendarId = currentUser.emailAddress;
+  var attendees = []
+
+  //adds all memebers of the queryGroup to the attendee param for the ajax call
+  for (var member of queryGroup) {
+    var attendee = {
+      id: member._id,
+      email: member.emailAddress,
+      accessToken: member.accessToken,
+      refreshToken: member.refreshToken,
+      responseStatus: 'needsAction'
+    };
+    attendees.push(attendee);
+  }
+
+  var start = {
+    "dateTime": timeStart,
+    "timeZone": "America/Chicago"
+  };
+  var end = {
+    "dateTime": timeEnd,
+    "timeZone": "America/Chicago"
+  };
+
+  var requestBody = {
+    "attendees": attendees,
+    "start": start,
+    "end": end,
+    "reminders": {
+      "useDefault": true
+    },
+    "summary": title,
+    'location': location
+  };
+
+  console.log('REQUEST BODY FOR UPDATE', requestBody);
+             // https://www.googleapis.com/calendar/v3/calendars/calendarId/events/eventId
+  let url = `https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events/${eventId}?sendNotifications=true`;
+
+  makeAjaxCall('PUT', url, accessToken, requestBody, (data) => {
+
+    callback(data)
+  })
+
+}
