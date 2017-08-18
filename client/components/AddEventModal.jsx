@@ -28,12 +28,14 @@ class AddEventModal extends React.Component {
 
   handleEventSubmit(e) {
     e.preventDefault();
-
+    console.log('meeting length', JSON.parse(e.target.meetingLength.value))
     var meetingLength = JSON.parse(e.target.meetingLength.value)
     var meetingTitle = e.target.title.value
     var selectedTime = this.state.topCreateSelected ? e.target.title.value : this.props.date
     let location = e.target.location.value;
     var timeMin = moment(this.props.topCreateSelected ? e.target.meetingDate.value : this.props.date, "MM/DD/YYYY");
+    var timeMin = moment(this.props.date, "MM/DD/YYYY");
+
     var queryInfo = {
       timeMin: timeMin.toISOString(),
       timeMax: timeMin.add('1', 'days').toISOString()
