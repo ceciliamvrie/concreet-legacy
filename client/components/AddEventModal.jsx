@@ -74,9 +74,7 @@ class AddEventModal extends React.Component {
             </h3>
           </div>
           <input type="text" name="location" placeholder="Location"></input>
-          {
-            this.props.topCreateSelected && <input type="text" name="meetingDate" placeholder="Meeting Date"></input>
-          }
+          <input type="text" name="meetingDate" placeholder={this.props.topCreateSelected ? "Meeting Date" : this.props.date}></input>
           <button className="createEventButton" onClick={this.props.close}>Create event</button>
         </form>
       </div>
