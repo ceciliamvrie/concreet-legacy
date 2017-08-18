@@ -26,8 +26,8 @@ const customStyles = {
 };
 
 class ViewEventModal extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
       modalIsOpen: true,
@@ -109,6 +109,7 @@ class ViewEventModal extends React.Component {
           closeModal={this.closeModal.bind(this)}
           eventPicked={this.props.eventPicked}
           updateSlotsAndEventInfo={this.props.updateSlotsAndEventInfo}
+          editingMode={this.props.editingMode}
           />
         }
 

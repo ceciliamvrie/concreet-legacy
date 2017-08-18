@@ -193,6 +193,7 @@ class EditEvent extends React.Component {
       contacts.push(temp[member])
     }
     this.props.updateEditedContacts(contacts)
+    this.props.editingMode()
 
     CalendarModel.freeBusy(contacts, this.props.user.user, queryInfo.timeMin, queryInfo.timeMax, (calendars) => {
       console.log(queryInfo.timeMin, queryInfo.timeMax)
