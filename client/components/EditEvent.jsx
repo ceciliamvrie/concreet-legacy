@@ -46,7 +46,7 @@ class EditEvent extends React.Component {
       dateValue: value,
       date: this.props.eventPicked.start.toString().split(' ').slice(0, 4).join(' '),
       formattedValue: '',
-      checkAvail: true,
+      checkAvail: this.props.readyToUpdateBool,
       eventTime: this.props.eventTime
     };
 
@@ -85,7 +85,6 @@ class EditEvent extends React.Component {
     console.log('delete event button clicked');
     CalendarModel.deleteEventAjax(this.props.eventPicked.id, this.props.user.user, (err, res) => {
       this.props.renderEventsToCalendar();
-      console.log('IM THE FRIGGIN KING OF THE WORLD!!!!! ')
       this.props.closeViewModal();
     })
   }
@@ -100,8 +99,6 @@ class EditEvent extends React.Component {
     
     this.setState({
       attendees: this.props.eventPicked.attendees
-    }, () => {
-      console.log('REMAINING ATTENDEES AFTER removed', this.state.attendees)
     })
   }
 
@@ -190,7 +187,6 @@ class EditEvent extends React.Component {
   }
 
   toggleAvail() {
-
     var meetingLength = JSON.parse(this.state.meetingLength);
     var meetingTitle = this.props.eventPicked.summary;
     let location = this.props.eventPicked.location;
@@ -230,6 +226,7 @@ class EditEvent extends React.Component {
         this.props.updateSlotsAndEventInfo(freeSlots, queryInfo.timeMin, meetingTitle, meetingLength, location, this.props.eventPicked.id)
       });
     })
+
     this.setState({
       topCreateSelected: !this.state.topCreateSelected
     })
@@ -237,10 +234,19 @@ class EditEvent extends React.Component {
   }
 
   update() {
+    var up = this.props.up
+    if (this.props.readyToUpdateBool) {
+      CalendarModel.updateEvent(up[0], up[1], up[2], up[3], up[4], up[5], up[6], (data) => {
+        this.props.readyToUpdate();
+        this.props.editingMode();
+        this.props.renderEventsToCalendar();
+        this.props.toggleEdit();
+      })
+      console.log('UPDATED THIS SHIT')
+    } else {
+      console.log('error in updating')
+    }
 
-    this.setState({
-      checkAvail: !this.state.checkAvail
-    })
 
   }
 
@@ -295,7 +301,7 @@ class EditEvent extends React.Component {
               </div>
             :
               <div>
-                <h3 style={{marginLeft: '38%'}}>
+                <h3 style={{marginLeft: '35%'}}>
                   <i onClick={this.editMeetLength.bind(this)} className="fa fa-pencil fa-fw" aria-hidden="true"></i>
                     Set Length: {Math.floor(this.state.meetingLength / 60)} Hours   {this.state.meetingLength % 60} Mins
                 </h3>
@@ -303,7 +309,7 @@ class EditEvent extends React.Component {
             }
 
             {this.state.toggleLocation ? 
-              <div style={{marginLeft: '38%'}}>
+              <div style={{marginLeft: '35%'}}>
                 <form onSubmit={this.handleLocationChange.bind(this)}>
                   <input type="text" name="location" placeholder={this.props.eventPicked.location || 'Set Location'}/>
                   <button style={{marginLeft: '2px', marginBottom: '10px'}}> Accept </button>
@@ -311,12 +317,14 @@ class EditEvent extends React.Component {
               </div>
             :
               <div>
-                <h3 style={{marginLeft: '38%'}}>
+                <h3 style={{marginLeft: '35%'}}>
                   <i onClick={this.editLocation.bind(this)} className="fa fa-pencil fa-fw" aria-hidden="true"></i>
                     {this.props.eventPicked.location || 'No Location For This Event'}
                 </h3>
               </div> 
             }
+
+            <button className="createEventButton" style={{marginLeft: '35%', textAlign: 'center'}} onClick={this.toggleAvail.bind(this)}>Check Available Times</button> 
 
             </div>
 
@@ -331,12 +339,8 @@ class EditEvent extends React.Component {
               : null}
             </div>
             <div style={{textAlign: 'right'}}>
-              {this.state.checkAvail ? 
-                <button className="createEventButton" onClick={this.toggleAvail.bind(this)}>Check Available Times</button>
-              :  
-                <button className="createEventButton" onClick={this.update.bind(this)}>Update event</button>
-              }
-              <button className="createEventButton" style={{margin: '20px'}}onClick={this.props.toggleEdit}>Cancel</button>
+              <button className="createEventButton" style={{margin: '20px'}} onClick={this.update.bind(this)}>Update event</button>
+              <button className="createEventButton" style={{margin: '20px'}} onClick={this.props.toggleEdit}>Cancel</button>
             </div>
           </div>
           </Modal>

@@ -58,17 +58,16 @@ class TimeSlot extends React.Component {
 		// call add event to create google calendar event for all users
 		console.log(Array.isArray(allContacts))
 		if (this.props.beingEdited) {
-			CalendarModel.updateEvent(allContacts, this.props.user.user, this.props.eventTitle, selectedDateTime, endTime, this.props.location, eventId, (data) => {
-				this.props.renderEventsToCalendar();
-			})
-		  this.props.editingMode()
+			var user = this.props.user.user
+			var title = this.props.eventTitle
+			var location = this.props.location
+			this.props.readyToUpdate([allContacts, user, title, selectedDateTime, endTime, location, eventId])
 		} else {
 			CalendarModel.addEvent(allContacts, this.props.user.user, this.props.eventTitle, selectedDateTime, endTime, this.props.location, (data) => {
-
 				this.props.renderEventsToCalendar();
+		    this.props.closeModal()
 			})
 	  }
-		this.props.closeModal()
 	}
 
 	render() {
