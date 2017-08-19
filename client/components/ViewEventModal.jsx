@@ -55,10 +55,13 @@ class ViewEventModal extends React.Component {
   }
 
   toggleEditEvent() {
-    console.log('toggled')
-    this.setState({
-      toggleEdit: !this.state.toggleEdit
-    })
+    if (this.props.user.user.emailAddress === this.props.eventPicked.creator.email) {
+      this.setState({
+        toggleEdit: !this.state.toggleEdit
+      });
+    } else {
+      alert('you ca;ajs;l');
+    }
   }
 
   render() {
