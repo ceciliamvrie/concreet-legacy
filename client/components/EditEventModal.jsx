@@ -59,11 +59,7 @@ class EditEventModal extends React.Component {
     })
 
   }
-
-  cancel() {
-    this.s
-  }
-
+  
   render() {
     return (
       <div className="addevent">

@@ -43,8 +43,9 @@ class CreateDateModal extends React.Component {
   }
 
   closeModal() {
-    console.log('close in create date')
-    this.props.closeModal()
+
+      this.props.closeModal()
+  
     this.setState({modalIsOpen: false});
   }
 
@@ -71,6 +72,7 @@ class CreateDateModal extends React.Component {
             location={this.props.location}
             date={this.props.selectedDate}
             style={this.customStyles}
+            // close={this.closeModal.bind(this)}
           />
         </Modal>
       </div>

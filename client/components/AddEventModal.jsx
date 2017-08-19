@@ -31,9 +31,9 @@ class AddEventModal extends React.Component {
     console.log('meeting length', JSON.parse(e.target.meetingLength.value))
     var meetingLength = JSON.parse(e.target.meetingLength.value)
     var meetingTitle = e.target.title.value
-    var selectedTime = this.state.topCreateSelected ? e.target.title.value : this.props.date
+    var selectedTime = this.props.date === 'Meeting Date' ? e.target.title.value : this.props.date
     let location = e.target.location.value;
-    var timeMin = moment(this.props.topCreateSelected ? e.target.meetingDate.value : this.props.date, "MM/DD/YYYY");
+    var timeMin = moment(this.props.date === 'Meeting Date' ? e.target.meetingDate.value : this.props.date, "MM/DD/YYYY");
 
     var queryInfo = {
       timeMin: timeMin.toISOString(),
@@ -75,8 +75,8 @@ class AddEventModal extends React.Component {
             </h3>
           </div>
           <input type="text" name="location" placeholder="Location"></input>
-          <input type="text" name="meetingDate" placeholder={this.props.topCreateSelected ? "Meeting Date" : this.props.date}></input>
-          <button className="createEventButton" onClick={this.props.close}>Create event</button>
+          <input type="text" name="meetingDate" placeholder={this.props.date}></input>
+          <button className="createEventButton" >Create event</button>
         </form>
       </div>
 
