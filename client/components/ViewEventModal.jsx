@@ -91,7 +91,7 @@ class ViewEventModal extends React.Component {
             </h3>
 
 
-            <div>
+            <div className="yomama">
               {this.props.eventPicked.attendees ?
                 <Columns columns="2">
                   {this.props.eventPicked.attendees.map((atnd) => {
@@ -99,7 +99,7 @@ class ViewEventModal extends React.Component {
                     if (atnd.email !== this.props.user.user.emailAddress) {
 
                         return <div id="attendee">
-                        {atnd.email}: <label style={{fontStyle: 'italic', fontSize: '14px'}}>{atnd.responseStatus}</label></div>
+                        {atnd.email}: <label style={{'fontWeight': 'bold', fontSize: '14px', 'color': atnd.responseStatus === 'accepted' ? 'rgb(30, 214, 118)' : atnd.responseStatus === 'needsAction' ? 'rgb(235, 181, 21)' : 'rgb(216, 86, 29)'}}>{atnd.responseStatus === 'needsAction' ? 'pending' : atnd.responseStatus}</label></div>
                       }
                     }
                   )}
