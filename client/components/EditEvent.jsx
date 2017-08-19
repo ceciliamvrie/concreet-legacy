@@ -241,6 +241,7 @@ class EditEvent extends React.Component {
         this.props.editingMode();
         this.props.renderEventsToCalendar();
         this.props.toggleEdit();
+        this.props.closeModal();
       })
       console.log('UPDATED THIS SHIT')
     } else {
