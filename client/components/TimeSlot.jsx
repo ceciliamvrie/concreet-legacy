@@ -46,23 +46,24 @@ class TimeSlot extends React.Component {
 		var isoTime = moment(momentTime, 'HH:mm:ss').toISOString().split('T')[1]
 
 		// put together the selectedDate with the selectedTime
+		console.log('selectedDate before', selectedDate)
 		var selectedDateTime = (selectedDate + 'T' + isoTime);
 
+		console.log('SLOT TIME', selectedDateTime)
 		// end time is selectedTime plus meetingLength
 		var endTime = moment(selectedDateTime).add(this.props.meetingLength, 'minutes').toISOString();
-
+		console.log('SLOT TIME END TIME', endTime)
 		this.props.getEventDateTime(selectedDateTime);
 
 		var eventId = this.props.eventId
 
 		// call add event to create google calendar event for all users
 		if (this.props.beingEdited) {
-			console.log('$$$$$$$$$$$$$$$$')
 			var user = this.props.user.user
 			var title = this.props.eventTitle
 			var location = this.props.location
 			console.log('Selected time', selectedDateTime, endTime)
-			this.props.readyToUpdate(true, [allContacts, user, title, selectedDateTime, endTime, location, eventId, this.props.slotTime.formatted, this.props.slotTime.end])
+			this.props.readyToUpdate(true, [allContacts, user, title, selectedDateTime, endTime, location, eventId, this.props.slotTime.formatted, this.props.slotTime.end, true])
 		} else {
 
 			CalendarModel.addEvent(allContacts, this.props.user.user, this.props.eventTitle, selectedDateTime, endTime, this.props.location, (data) => {

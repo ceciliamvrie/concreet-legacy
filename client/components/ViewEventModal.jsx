@@ -6,6 +6,7 @@ import CreateEventModal from './CreateDateModal.jsx';
 import Iframe from 'react-iframe';
 import EditEvent from './EditEvent.jsx';
 import Map from './Map.jsx';
+import moment from 'moment';
 
 // Modal styling
 const customStyles = {
@@ -31,7 +32,8 @@ class ViewEventModal extends React.Component {
 
     this.state = {
       modalIsOpen: true,
-      toggleEdit: false
+      toggleEdit: false,
+      currentMeetingLength: ''
 
     };
 
@@ -57,6 +59,7 @@ class ViewEventModal extends React.Component {
   }
 
   toggleEditEvent() {
+
     if (this.props.user.user.emailAddress === this.props.eventPicked.creator.email) {
       this.props.editingMode(true)
       this.setState({
@@ -116,6 +119,7 @@ class ViewEventModal extends React.Component {
 
           <EditEvent
           up={this.props.up}
+          attendees={this.props.eventPicked.attendees ? this.props.eventPicked.attendees.slice(): []}
           updateEditedContacts={this.props.updateEditedContacts}
           allContacts={this.props.allContacts}
           user={this.props.user}
@@ -125,6 +129,7 @@ class ViewEventModal extends React.Component {
           updateSlotsAndEventInfo={this.props.updateSlotsAndEventInfo}
           editingMode={this.props.editingMode}
           eventTime={this.props.eventTime}
+          eventEndTime={this.props.eventEndTime}
           renderEventsToCalendar = {this.props.renderEventsToCalendar}
           closeViewModal={this.props.closeViewModal}
           readyToUpdate={this.props.readyToUpdate}

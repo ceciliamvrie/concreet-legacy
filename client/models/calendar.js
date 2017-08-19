@@ -108,7 +108,7 @@ const makeAjaxCall = (type, url, accessToken, requestBody, callback) => {
       callback(data);
     },
     error: function(err) {
-      console.log('error call to ' + url)
+      console.log('error call to ' + url, err)
       callback(err);
     }
   });
@@ -228,7 +228,6 @@ export const addEvent = (queryGroup, currentUser, title, timeStart, timeEnd, loc
   var accessToken = currentUser.accessToken;
   var calendarId = currentUser.emailAddress;
   var attendees = []
-
   //adds all memebers of the queryGroup to the attendee param for the ajax call
   for (var member of queryGroup) {
     var attendee = {
@@ -273,9 +272,12 @@ export const addEvent = (queryGroup, currentUser, title, timeStart, timeEnd, loc
 }
 
 export const updateEvent = (queryGroup, currentUser, title, timeStart, timeEnd, location, eventId, callback) => {
+  console.log('CURRENT USER', timeStart)
   var accessToken = currentUser.accessToken;
   var calendarId = currentUser.emailAddress;
   var attendees = []
+  queryGroup.pop()
+  queryGroup.push(currentUser)
 
   //adds all memebers of the queryGroup to the attendee param for the ajax call
   for (var member of queryGroup) {
