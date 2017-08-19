@@ -48,6 +48,7 @@ class AddEvent extends React.Component {
     return (
       <div className="addevent">
             <form onSubmit={this.handleEventSubmit.bind(this)}>
+
                 <button className="createEventButton" onClick={this.handleIt.bind(this)}>Create Event</button>
             </form>
       </div>

@@ -53,6 +53,7 @@ class ViewEventModal extends React.Component {
     this.setState({modalIsOpen: false});
     this.props.closeViewModal()
     this.props.editingMode(false)
+
   }
 
   toggleEditEvent() {

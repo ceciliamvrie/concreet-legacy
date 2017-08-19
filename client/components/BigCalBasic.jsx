@@ -133,7 +133,7 @@ class BigCalBasic extends React.Component{
   }
 
   editingMode(bool) {
-    console.log('UPDATE CONTACTS EDITED CALLED', this.state.beingEdited)
+    console.log('UPDATE CONTACTS EDITED CALLED', this.state.beingEdited, bool)
     this.setState({
       beingEdited: bool,
       displayModal: false
