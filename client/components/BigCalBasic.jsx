@@ -19,7 +19,6 @@ class BigCalBasic extends React.Component{
   constructor(props) {
     super(props);
     this.state = {
-      topCreateSelected: false,
       eventPicked: {},
       events: [],
       availableSlots: [],
@@ -42,13 +41,7 @@ class BigCalBasic extends React.Component{
 
     this.renderEventsToCalendar();
   }
-
-  handleTopCreateSelect() {
-    this.setState({
-      topCreateSelected: !this.state.topCreateSelected
-    })
-  }
-
+  
   renderEventsToCalendar() {
     var calendarList = [];
       CalendarModel.getCalendarEvents(this.props.user.user, calendarList, (eventsList) => {
@@ -93,34 +86,31 @@ class BigCalBasic extends React.Component{
 
   closeModal() {
 
-    if (this.state.topCreateSelected) {
-      console.log('inside closeModal topCreateSelected')
-      this.setState({
-        topCreateSelected: !this.state.topCreateSelected
-      }, () => {
-        console.log('does it toggle?????', this.state.topCreateSelected)
-      })
-    } else {
-      console.log('inside closeModal other')
-      this.setState({
-        displayPickDateModal: !this.state.displayPickDateModal
+    console.log('inside closeModal other')
 
-      })
-    }
+    this.setState({
+      displayPickDateModal: !this.state.displayPickDateModal,
+      selectedDate: 'Meeting Date'
+
+    })
+    
   }
 
   displayPickDateModal() {
-    if (this.state.topCreateSelected) {
-      this.setState({
-        displayPickDateModal: !this.state.displayPickDateModal,
-        displayModal: false
-      })
-    } else {
+
       this.setState({
         displayModal: false,
       })
-    }
+
   }
+
+  // handleTopCreateSelect() {
+  //   this.setState({
+  //     topCreateSelected: !this.state.topCreateSelected,
+  //     displayModal: !this.state.displayModal
+  //   })
+  // }
+
 
   closeViewModal() {
     this.setState({
@@ -152,11 +142,12 @@ class BigCalBasic extends React.Component{
     })
   }
 
+
+
   render(){
     return (
       <div className="calendar">
         <AddEvent
-          topCreateSelected={this.handleTopCreateSelect.bind(this)}
           closeDisplayModal={this.closeDisplayModal.bind(this)}
           closeModal={this.closeModal.bind(this)}
           user={this.props.user}
