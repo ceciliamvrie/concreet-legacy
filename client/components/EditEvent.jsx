@@ -339,17 +339,10 @@ class EditEvent extends React.Component {
               : null}
             </div>
             <div style={{textAlign: 'right'}}>
-<<<<<<< HEAD
+
               <button className="createEventButton" style={{margin: '20px'}} onClick={this.update.bind(this)}>Update event</button>
               <button className="createEventButton" style={{margin: '20px'}} onClick={this.props.toggleEdit}>Cancel</button>
-=======
-              {this.state.checkAvail ?
-                <button className="createEventButton" onClick={this.toggleAvail.bind(this)}>Check Available Times</button>
-              :
-                <button className="createEventButton" onClick={this.update.bind(this)}>Update event</button>
-              }
-              <button className="createEventButton" style={{margin: '20px'}}onClick={this.props.toggleEdit}>Cancel</button>
->>>>>>> Add check so that a user that didn't create a given event cannot edit it doi
+
             </div>
           </div>
           </Modal>
