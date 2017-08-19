@@ -204,7 +204,7 @@ class EditEvent extends React.Component {
       for (var i = 0; i < this.props.eventPicked.attendees.length; i++) {
         for (var j = 0; j < this.props.allContacts.length; j++) {
 
-          if (this.props.allContacts[j].emailAddress === this.props.eventPicked.attendees[i].email) {
+          if (this.props.allContacts[j].emailAddress === this.props.eventPicked.attendees[i].email ) {
             temp[this.props.eventPicked.attendees[i].email] = this.props.allContacts[j] || 'FUDGE'
           }
         }
@@ -214,6 +214,7 @@ class EditEvent extends React.Component {
     for (var member in temp) {
       contacts.push(temp[member])
     }
+
     this.props.updateEditedContacts(contacts)
 
     CalendarModel.freeBusy(contacts, this.props.user.user, queryInfo.timeMin, queryInfo.timeMax, (calendars) => {
@@ -236,11 +237,12 @@ class EditEvent extends React.Component {
   update() {
     var up = this.props.up
 
-    CalendarModel.updateEvent(up[0], up[1], up[2], up[3], up[4], up[5], up[6], (data) => {
+    CalendarModel.updateEvent(up[0], up[1], this.props.eventPicked.summary, up[3], up[4], this.props.eventPicked.location, up[6], (data) => {
       this.props.readyToUpdate(false, []);
       this.props.editingMode();
       this.props.renderEventsToCalendar();
       this.props.toggleEdit();
+      // this.props.closeViewModal();
 
     })
   }
@@ -318,7 +320,7 @@ class EditEvent extends React.Component {
                 </h3>
               </div>
             }
-
+            <div style={{marginLeft: '35%'}}> {this.props.readyToUpdateBool ? this.props.up[7] + '-' + this.props.up[8]: 'Time Slot'}</div>
             <button className="createEventButton" style={{marginLeft: '35%', textAlign: 'center'}} onClick={this.toggleAvail.bind(this)}>Check Available Times</button>
 
             </div>

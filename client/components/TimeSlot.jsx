@@ -61,8 +61,10 @@ class TimeSlot extends React.Component {
 			var user = this.props.user.user
 			var title = this.props.eventTitle
 			var location = this.props.location
-			this.props.readyToUpdate(true, [allContacts, user, title, selectedDateTime, endTime, location, eventId])
+			console.log('Selected time', selectedDateTime, endTime)
+			this.props.readyToUpdate(true, [allContacts, user, title, selectedDateTime, endTime, location, eventId, this.props.slotTime.formatted, this.props.slotTime.end])
 		} else {
+
 			CalendarModel.addEvent(allContacts, this.props.user.user, this.props.eventTitle, selectedDateTime, endTime, this.props.location, (data) => {
 				this.props.renderEventsToCalendar();
 		    this.props.closeModal()

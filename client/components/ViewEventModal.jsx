@@ -93,9 +93,14 @@ class ViewEventModal extends React.Component {
             <div>
               {this.props.eventPicked.attendees ?
                 <Columns columns="2">
-                  {this.props.eventPicked.attendees.map((atnd) =>
-                    <div id="attendee">
-                    {atnd.email}: <label style={{fontStyle: 'italic', fontSize: '14px'}}>{atnd.responseStatus}</label></div>
+                  {this.props.eventPicked.attendees.map((atnd) => {
+
+                    if (atnd.email !== this.props.user.user.emailAddress) {
+
+                        return <div id="attendee">
+                        {atnd.email}: <label style={{fontStyle: 'italic', fontSize: '14px'}}>{atnd.responseStatus}</label></div>
+                      }
+                    }
                   )}
                 </Columns>
               : null}
@@ -126,9 +131,6 @@ class ViewEventModal extends React.Component {
           />
         }
 
-        {
-          console.log(this.props.eventPicked)
-        }
         </Modal>
       </div>
     );
