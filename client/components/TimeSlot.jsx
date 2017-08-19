@@ -21,7 +21,7 @@ class TimeSlot extends React.Component {
 	handleClick() {
 		// put selected contacts and selected contacts from groups into same array
 		var allContacts = [];
-		console.log('EDITING MODE', this.props.beingEdited)
+
 		if (this.props.beingEdited) {
 			allContacts = this.props.editedContacts
 		} else {
@@ -56,7 +56,6 @@ class TimeSlot extends React.Component {
 		var eventId = this.props.eventId
 
 		// call add event to create google calendar event for all users
-		console.log(';LKASDL;KFAS', this.props.beingEdited)
 		if (this.props.beingEdited) {
 			var user = this.props.user.user
 			var title = this.props.eventTitle

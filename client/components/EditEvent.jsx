@@ -234,7 +234,7 @@ class EditEvent extends React.Component {
 
   update() {
     var up = this.props.up
-    console.log('READY TO UPDATE', this.props.readyToUpdateBool)
+
     if (this.props.readyToUpdateBool) {
       CalendarModel.updateEvent(up[0], up[1], up[2], up[3], up[4], up[5], up[6], (data) => {
         this.props.readyToUpdate(false, []);
@@ -243,6 +243,7 @@ class EditEvent extends React.Component {
         this.props.toggleEdit();
       })
     } else {
+      alert('You must pick a meeting time')
       console.log('error in updating')
     }
 
