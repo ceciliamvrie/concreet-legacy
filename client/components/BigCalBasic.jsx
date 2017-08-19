@@ -41,7 +41,7 @@ class BigCalBasic extends React.Component{
 
     this.renderEventsToCalendar();
   }
-  
+
   renderEventsToCalendar() {
     var calendarList = [];
       CalendarModel.getCalendarEvents(this.props.user.user, calendarList, (eventsList) => {
@@ -85,32 +85,29 @@ class BigCalBasic extends React.Component{
   }
 
   closeModal() {
-
-    console.log('inside closeModal other')
-
-    this.setState({
-      displayPickDateModal: !this.state.displayPickDateModal,
-      selectedDate: 'Meeting Date'
-
-    })
-    
+    if (this.state.topCreateSelected) {
+      this.setState({
+        topCreateSelected: !this.state.topCreateSelected
+      });
+    } else {
+      this.setState({
+        displayPickDateModal: !this.state.displayPickDateModal
+      });
+    }
   }
 
   displayPickDateModal() {
-
+    if (this.state.topCreateSelected) {
+      this.setState({
+        displayPickDateModal: !this.state.displayPickDateModal,
+        displayModal: false
+      })
+    } else {
       this.setState({
         displayModal: false,
       })
-
+    }
   }
-
-  // handleTopCreateSelect() {
-  //   this.setState({
-  //     topCreateSelected: !this.state.topCreateSelected,
-  //     displayModal: !this.state.displayModal
-  //   })
-  // }
-
 
   closeViewModal() {
     this.setState({
@@ -133,7 +130,7 @@ class BigCalBasic extends React.Component{
   }
 
   editingMode(bool) {
-    console.log('UPDATE CONTACTS EDITED CALLED', this.state.beingEdited, bool)
+    console.log('UPDATE CONTACTS EDITED CALLED', this.state.beingEdited)
     this.setState({
       beingEdited: bool,
       displayModal: false
@@ -142,7 +139,15 @@ class BigCalBasic extends React.Component{
     })
   }
 
+  changeEventColor(event) {
+    var style = { backgroundColor: '#8dc150' };
 
+    if (event.organizer.email !== this.props.user.user.emailAddress) {
+      return { style: style };
+    } else {
+      return { style : {} }
+    }
+  }
 
   render(){
     return (
@@ -163,6 +168,7 @@ class BigCalBasic extends React.Component{
           popup
           events={this.state.events}
           views={allViews}
+          eventPropGetter={this.changeEventColor.bind(this)}
           titleAccessor='summary'
           defaultDate={new Date()}
           onSelectSlot={(slotInfo) => {
