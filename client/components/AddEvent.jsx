@@ -18,11 +18,14 @@ class AddEvent extends React.Component {
   }
 
   handleIt() {
+    console.log('first')
+    this.props.topCreateSelected()
     this.props.closeModal()
 
   }
-
+ 
   handleClick() {
+    console.log('second')
     this.setState({
       topCreateSelected: !this.state.topCreateSelected
     })
@@ -39,42 +42,7 @@ class AddEvent extends React.Component {
   }
 
   handleEventSubmit(e) {
-    e.preventDefault();
-    this.props.topCreateSelected()
-    console.log(this.props)
-    var meetingLength = JSON.parse(e.target.meetingLength.value)
-    var meetingTitle = e.target.title.value
-    let location = e.target.location.value;
-    var timeMin = moment(e.target.date.value, "MM/DD/YYYY");
-    var queryInfo = {
-      timeMin: timeMin.toISOString(),
-      timeMax: timeMin.add('1', 'days').toISOString()
-    };
-    // put selected contacts and selected contacts from groups into same array
-    var allContacts = this.props.selectedContacts.slice();
-    this.props.selectedGroups.forEach((group)=> {
-      // console.log('group: ', group)
-      group.contacts.forEach((contact) => {
-        if (!this.checkExist(allContacts, contact)) {
-          // console.log('Contact: ', allContacts)
-          allContacts.push(contact);
-        }
-      })
-    })
 
-    CalendarModel.freeBusy(allContacts, this.props.user.user, queryInfo.timeMin, queryInfo.timeMax, (calendars) => {
-      console.log(queryInfo.timeMin, queryInfo.timeMax)
-      // receives back calendars array with each element being an object with a email address as its only property
-      // each property has a value that is an object with a busy property
-      // value of busy property is an array of objects that include start and end property of busy times
-      findFreeTimes.findAvailableSlots(meetingLength, calendars, (freeSlots) => {
-        // passsing back the available slots as well as the selected date in ISO format (queryInfo.timeMin)
-        this.props.updateSlotsAndEventInfo(freeSlots, queryInfo.timeMin, meetingTitle, meetingLength, location)
-      });
-    })
-    this.setState({
-      topCreateSelected: !this.state.topCreateSelected
-    })
   }
 
   render() {

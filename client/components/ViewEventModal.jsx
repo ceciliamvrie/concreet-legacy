@@ -50,12 +50,14 @@ class ViewEventModal extends React.Component {
   }
 
   closeModal() {
-    this.props.closeViewModal()
     this.setState({modalIsOpen: false});
+    this.props.closeViewModal()
+    this.props.editingMode(false)
   }
 
   toggleEditEvent() {
     if (this.props.user.user.emailAddress === this.props.eventPicked.creator.email) {
+      this.props.editingMode(true)
       this.setState({
         toggleEdit: !this.state.toggleEdit
       });
@@ -91,9 +93,14 @@ class ViewEventModal extends React.Component {
             <div>
               {this.props.eventPicked.attendees ?
                 <Columns columns="2">
-                  {this.props.eventPicked.attendees.map((atnd) =>
-                    <div id="attendee">
-                    {atnd.email}: <label style={{fontStyle: 'italic', fontSize: '14px'}}>{atnd.responseStatus}</label></div>
+                  {this.props.eventPicked.attendees.map((atnd) => {
+
+                    if (atnd.email !== this.props.user.user.emailAddress) {
+
+                        return <div id="attendee">
+                        {atnd.email}: <label style={{fontStyle: 'italic', fontSize: '14px'}}>{atnd.responseStatus}</label></div>
+                      }
+                    }
                   )}
                 </Columns>
               : null}
@@ -113,7 +120,6 @@ class ViewEventModal extends React.Component {
           user={this.props.user}
           eventTime={this.state.eventTime}
           toggleEdit={this.toggleEditEvent.bind(this)}
-          closeModal={this.closeModal.bind(this)}
           eventPicked={this.props.eventPicked}
           updateSlotsAndEventInfo={this.props.updateSlotsAndEventInfo}
           editingMode={this.props.editingMode}
@@ -125,9 +131,6 @@ class ViewEventModal extends React.Component {
           />
         }
 
-        {
-          console.log(this.props.eventPicked)
-        }
         </Modal>
       </div>
     );

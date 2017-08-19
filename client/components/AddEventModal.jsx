@@ -34,7 +34,6 @@ class AddEventModal extends React.Component {
     var selectedTime = this.state.topCreateSelected ? e.target.title.value : this.props.date
     let location = e.target.location.value;
     var timeMin = moment(this.props.topCreateSelected ? e.target.meetingDate.value : this.props.date, "MM/DD/YYYY");
-    var timeMin = moment(this.props.date, "MM/DD/YYYY");
 
     var queryInfo = {
       timeMin: timeMin.toISOString(),

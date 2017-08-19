@@ -43,8 +43,8 @@ class EditEvent extends React.Component {
       toggleLocation: false,
       toggleMeetLength: false,
       toggleTime: false,
-      dateValue: value,
-      date: this.props.eventPicked.start.toString().split(' ').slice(0, 4).join(' '),
+      dateValue: this.props.eventPicked.start.toISOString(),
+      date: this.props.eventPicked.start.toLocaleDateString(),
       formattedValue: '',
       checkAvail: this.props.readyToUpdateBool,
       eventTime: this.props.eventTime
@@ -72,12 +72,11 @@ class EditEvent extends React.Component {
   }
 
   afterOpenModal() {
-    // references are now sync'd and can be accessed.
-    // this.subtitle.style.color = '#f00';
+   
   }
 
   closeModal() {
-    this.props.closeModal()
+    this.props.closeViewModal()
     this.setState({modalIsOpen: false});
   }
 
@@ -86,6 +85,7 @@ class EditEvent extends React.Component {
     CalendarModel.deleteEventAjax(this.props.eventPicked.id, this.props.user.user, (err, res) => {
       this.props.renderEventsToCalendar();
       this.props.closeViewModal();
+      this.props.editingMode();
     })
   }
 
@@ -94,8 +94,8 @@ class EditEvent extends React.Component {
     e.preventDefault()
 
     var i = e.target.getAttribute('name')
-    console.log('attendees', this.props.eventPicked.attendees)
-    console.log('current selected item', this.props.eventPicked.attendees.splice(i, 1))
+    // console.log('attendees', this.props.eventPicked.attendees)
+    // console.log('current selected item', this.props.eventPicked.attendees.splice(i, 1))
 
     this.setState({
       attendees: this.props.eventPicked.attendees
@@ -146,6 +146,7 @@ class EditEvent extends React.Component {
   }
 
   editDate() {
+
     this.setState({
       toggleDate: !this.state.toggleDate
     })
@@ -190,7 +191,15 @@ class EditEvent extends React.Component {
     var meetingLength = JSON.parse(this.state.meetingLength);
     var meetingTitle = this.props.eventPicked.summary;
     let location = this.props.eventPicked.location;
-    var timeMin = moment(this.state.datePicked, "MM/DD/YYYY");
+
+    if (this.state.datePicked) {
+      console.log('DATE WAS PICKED')
+      var timeMin = moment(this.state.datePicked, "MM/DD/YYYY");
+    } else {
+      console.log('DATE WAS nooooooot PICKED')
+      var timeMin = moment(this.props.eventPicked.start.toLocaleDateString(), "MM/DD/YYYY");
+    }
+    
     var queryInfo = {
       timeMin: timeMin.toISOString(),
       timeMax: timeMin.add('1', 'days').toISOString()
@@ -203,7 +212,7 @@ class EditEvent extends React.Component {
       for (var i = 0; i < this.props.eventPicked.attendees.length; i++) {
         for (var j = 0; j < this.props.allContacts.length; j++) {
 
-          if (this.props.allContacts[j].emailAddress === this.props.eventPicked.attendees[i].email) {
+          if (this.props.allContacts[j].emailAddress === this.props.eventPicked.attendees[i].email ) {
             temp[this.props.eventPicked.attendees[i].email] = this.props.allContacts[j] || 'FUDGE'
           }
         }
@@ -213,8 +222,8 @@ class EditEvent extends React.Component {
     for (var member in temp) {
       contacts.push(temp[member])
     }
+
     this.props.updateEditedContacts(contacts)
-    this.props.editingMode()
 
     CalendarModel.freeBusy(contacts, this.props.user.user, queryInfo.timeMin, queryInfo.timeMax, (calendars) => {
       console.log(queryInfo.timeMin, queryInfo.timeMax)
@@ -235,19 +244,14 @@ class EditEvent extends React.Component {
 
   update() {
     var up = this.props.up
-    if (this.props.readyToUpdateBool) {
-      CalendarModel.updateEvent(up[0], up[1], up[2], up[3], up[4], up[5], up[6], (data) => {
-        this.props.readyToUpdate();
-        this.props.editingMode();
-        this.props.renderEventsToCalendar();
-        this.props.toggleEdit();
-      })
-      console.log('UPDATED THIS SHIT')
-    } else {
-      console.log('error in updating')
-    }
 
+    CalendarModel.updateEvent(up[0], up[1], this.props.eventPicked.summary, up[3], up[4], this.props.eventPicked.location, up[6], (data) => {
+      this.props.readyToUpdate(false, []);
+      this.props.editingMode();
+      this.props.renderEventsToCalendar();
+      this.props.toggleEdit();
 
+    })
   }
 
   render() {
@@ -263,7 +267,7 @@ class EditEvent extends React.Component {
         >
           <div>
             <div className="modalTitle">
-              <button className="createEventButton" onClick={this.deleteEvent.bind(this)}> Delete this Event (*batman voice* it's garbage ) </button>
+              <button className="createEventButton" onClick={this.deleteEvent.bind(this)}> Delete this Event </button>
             </div>
             {this.state.toggleTitle ?
               <form onSubmit={this.handleTitleChange.bind(this)}>
@@ -323,7 +327,7 @@ class EditEvent extends React.Component {
                 </h3>
               </div>
             }
-
+            <div style={{marginLeft: '35%'}}> {this.props.readyToUpdateBool ? this.props.up[7] + '-' + this.props.up[8]: 'Time Slot'}</div>
             <button className="createEventButton" style={{marginLeft: '35%', textAlign: 'center'}} onClick={this.toggleAvail.bind(this)}>Check Available Times</button>
 
             </div>
@@ -331,25 +335,21 @@ class EditEvent extends React.Component {
             <div>
               {this.props.eventPicked.attendees ?
                 <Columns columns="2">
-                  {this.props.eventPicked.attendees.map((atnd, i) =>
-                    <div id="attendee"><i className="fa fa-minus-circle fa-fw" id="minusDelete" aria-hidden="true" onClick={this.removeAttendee.bind(this)} name={i}></i>
-                    {atnd.email}: <label style={{fontStyle: 'italic', fontSize: '14px'}}>{atnd.responseStatus}</label></div>
+                  {this.props.eventPicked.attendees.map((atnd, i) => {
+                    if (atnd.email !== this.props.user.user.emailAddress) {
+                        return <div id="attendee"><i className="fa fa-minus-circle fa-fw" id="minusDelete" aria-hidden="true" onClick={this.removeAttendee.bind(this)} name={i}></i>
+                        {atnd.email}: <label style={{fontStyle: 'italic', fontSize: '14px'}}>{atnd.responseStatus}</label></div>
+                      }
+                    }
                   )}
                 </Columns>
               : null}
             </div>
             <div style={{textAlign: 'right'}}>
-<<<<<<< HEAD
+
               <button className="createEventButton" style={{margin: '20px'}} onClick={this.update.bind(this)}>Update event</button>
               <button className="createEventButton" style={{margin: '20px'}} onClick={this.props.toggleEdit}>Cancel</button>
-=======
-              {this.state.checkAvail ?
-                <button className="createEventButton" onClick={this.toggleAvail.bind(this)}>Check Available Times</button>
-              :
-                <button className="createEventButton" onClick={this.update.bind(this)}>Update event</button>
-              }
-              <button className="createEventButton" style={{margin: '20px'}}onClick={this.props.toggleEdit}>Cancel</button>
->>>>>>> Add check so that a user that didn't create a given event cannot edit it doi
+
             </div>
           </div>
           </Modal>

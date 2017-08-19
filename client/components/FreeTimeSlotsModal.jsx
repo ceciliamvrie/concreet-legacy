@@ -38,9 +38,12 @@ class FreeTimeSlotsModal extends React.Component {
 
   closeModal() {
     console.log('closeModal')
-    this.props.closeDisplayModal()
-    this.props.closeModal()
     this.setState({modalIsOpen: false});
+    this.props.readyToUpdate(false)
+    this.props.displayPickDateModal()
+    if (!this.props.beingEdited) {
+      this.props.closeModal()
+    }
   }
 
   render() {
@@ -63,6 +66,7 @@ class FreeTimeSlotsModal extends React.Component {
                   key={i}
                   slotTime={slot}
                   closeModal={this.closeModal.bind(this)}
+                  closeDisplayModal={this.props.closeDisplayModal}
                   selectedDate={this.props.selectedDate}
                   getEventDateTime={this.props.getEventDateTime}
                   eventTitle={this.props.eventTitle}
