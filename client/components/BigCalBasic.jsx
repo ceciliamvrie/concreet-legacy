@@ -238,6 +238,7 @@ class BigCalBasic extends React.Component{
         />}
 
         {this.state.displayViewModal && <ViewEventModal
+          eventTime={this.state.eventTime}
           up={this.state.up}
           readyToUpdate={this.readyToUpdate.bind(this)}
           readyToUpdateBool={this.state.readyToUpdateBool}
