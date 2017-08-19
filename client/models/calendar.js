@@ -76,7 +76,7 @@ export const deleteEventAjax = (eventId, currentUser, callback) => {
   var accessToken = currentUser.accessToken;
   var calendarId = currentUser.emailAddress;
   let url = `https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events/${eventId}?sendNotifications=true`;
-  
+
   $.ajax({
     type: 'DELETE',
     url: url,
@@ -169,6 +169,8 @@ export const getCalendarEvents = function (currentUser, calendarList, callback) 
 //this function converts them to the correct format
 export const processEvents = function (eventsList, callback) {
   for (var event of eventsList) {
+    event.endDateTime = event.end.dateTime;
+    event.startDateTime = event.start.dateTime;
     event.end = new Date (event.end.dateTime);
     event.start = new Date (event.start.dateTime);
   }
