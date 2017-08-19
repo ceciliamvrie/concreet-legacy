@@ -77,6 +77,7 @@ class EditEvent extends React.Component {
 
   closeModal() {
     this.props.closeViewModal()
+    this.props.editingMode(false)
     this.setState({modalIsOpen: false});
   }
 
@@ -199,7 +200,7 @@ class EditEvent extends React.Component {
       console.log('DATE WAS nooooooot PICKED')
       var timeMin = moment(this.props.eventPicked.start.toLocaleDateString(), "MM/DD/YYYY");
     }
-    
+
     var queryInfo = {
       timeMin: timeMin.toISOString(),
       timeMax: timeMin.add('1', 'days').toISOString()
