@@ -19,7 +19,6 @@ class BigCalBasic extends React.Component{
   constructor(props) {
     super(props);
     this.state = {
-      topCreateSelected: false,
       eventPicked: {},
       events: [],
       availableSlots: [],
@@ -41,12 +40,6 @@ class BigCalBasic extends React.Component{
     }
 
     this.renderEventsToCalendar();
-  }
-
-  handleTopCreateSelect() {
-    this.setState({
-      topCreateSelected: !this.state.topCreateSelected
-    })
   }
 
   renderEventsToCalendar() {
