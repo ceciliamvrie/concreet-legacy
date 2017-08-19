@@ -96,7 +96,7 @@ class EditEvent extends React.Component {
     var i = e.target.getAttribute('name')
     console.log('attendees', this.props.eventPicked.attendees)
     console.log('current selected item', this.props.eventPicked.attendees.splice(i, 1))
-    
+
     this.setState({
       attendees: this.props.eventPicked.attendees
     })
@@ -167,7 +167,7 @@ class EditEvent extends React.Component {
       date: hiddenInputElement.getAttribute('data-formattedvalue')
     }, () => {
       console.log('date changed', this.state.datePicked)
-    }) 
+    })
   }
 
   handleMeetLengthChange() {
@@ -202,7 +202,7 @@ class EditEvent extends React.Component {
     if (this.props.eventPicked.attendees) {
       for (var i = 0; i < this.props.eventPicked.attendees.length; i++) {
         for (var j = 0; j < this.props.allContacts.length; j++) {
-          
+
           if (this.props.allContacts[j].emailAddress === this.props.eventPicked.attendees[i].email) {
             temp[this.props.eventPicked.attendees[i].email] = this.props.allContacts[j] || 'FUDGE'
           }
@@ -284,7 +284,7 @@ class EditEvent extends React.Component {
                    When: {this.state.date}
                 </h3>
               </div>
-            : 
+            :
                 <FormGroup style={{textAlign: 'center', width: '35%', marginLeft: '32%'}}>
                   <DatePicker clearButtonElement="" id="datePicker" style={{height: '25px', fontSize: '18px', textAlign: 'center', width: '100%'}}
                    name="date" value={this.state.dateValue} onChange={this.handleDatePicked}/>
@@ -292,7 +292,7 @@ class EditEvent extends React.Component {
                 </FormGroup>
             }
             <div>
-            {this.state.toggleMeetLength ? 
+            {this.state.toggleMeetLength ?
               <div style={{marginLeft: '10%'}}>Time Length: {Math.floor(this.state.meetingLength / 60)} Hours   {this.state.meetingLength % 60} Mins
                 <h3>
                   <input style={{marginLeft: '8%', width: '28%'}} type="range" name="meetingLength" min="30" max="600" value={this.state.meetingLength} onChange={(e => this.setState({meetingLength: e.target.value, meetingLengthTitle: e.target.value}))}></input>
@@ -305,10 +305,10 @@ class EditEvent extends React.Component {
                   <i onClick={this.editMeetLength.bind(this)} className="fa fa-pencil fa-fw" aria-hidden="true"></i>
                     Set Length: {Math.floor(this.state.meetingLength / 60)} Hours   {this.state.meetingLength % 60} Mins
                 </h3>
-              </div> 
+              </div>
             }
 
-            {this.state.toggleLocation ? 
+            {this.state.toggleLocation ?
               <div style={{marginLeft: '35%'}}>
                 <form onSubmit={this.handleLocationChange.bind(this)}>
                   <input type="text" name="location" placeholder={this.props.eventPicked.location || 'Set Location'}/>
@@ -321,10 +321,10 @@ class EditEvent extends React.Component {
                   <i onClick={this.editLocation.bind(this)} className="fa fa-pencil fa-fw" aria-hidden="true"></i>
                     {this.props.eventPicked.location || 'No Location For This Event'}
                 </h3>
-              </div> 
+              </div>
             }
 
-            <button className="createEventButton" style={{marginLeft: '35%', textAlign: 'center'}} onClick={this.toggleAvail.bind(this)}>Check Available Times</button> 
+            <button className="createEventButton" style={{marginLeft: '35%', textAlign: 'center'}} onClick={this.toggleAvail.bind(this)}>Check Available Times</button>
 
             </div>
 
@@ -339,8 +339,17 @@ class EditEvent extends React.Component {
               : null}
             </div>
             <div style={{textAlign: 'right'}}>
+<<<<<<< HEAD
               <button className="createEventButton" style={{margin: '20px'}} onClick={this.update.bind(this)}>Update event</button>
               <button className="createEventButton" style={{margin: '20px'}} onClick={this.props.toggleEdit}>Cancel</button>
+=======
+              {this.state.checkAvail ?
+                <button className="createEventButton" onClick={this.toggleAvail.bind(this)}>Check Available Times</button>
+              :
+                <button className="createEventButton" onClick={this.update.bind(this)}>Update event</button>
+              }
+              <button className="createEventButton" style={{margin: '20px'}}onClick={this.props.toggleEdit}>Cancel</button>
+>>>>>>> Add check so that a user that didn't create a given event cannot edit it doi
             </div>
           </div>
           </Modal>
