@@ -34,6 +34,7 @@ class BigCalBasic extends React.Component{
       editedContacts: [],
       beingEdited: false,
       eventTime: '',
+      eventEndTime: '',
       readyToUpdateBool: false,
       up: []
 
@@ -176,23 +177,37 @@ class BigCalBasic extends React.Component{
             }
           }
           onSelectEvent={event => {
-            var time = event.start.toString().split(' ').slice(4, 5).join(' ')
-            var newTime = time.split('')
-            var hour = newTime.splice(0, 2).join('')
-            newTime = newTime.slice(0, 3)
+            var startTime = event.start.toString().split(' ').slice(4, 5).join(' ')
+            var newStartTime = startTime.split('')
+            var startHour = newStartTime.splice(0, 2).join('')
+            newStartTime = newStartTime.slice(0, 3)
 
-            var final = ''
-            if (Number(hour) > 12) {
-              var t = Number(hour) - 12
-              final = t + newTime.join('') + 'pm'
+            var endTime = event.end.toString().split(' ').slice(4, 5).join(' ')
+            var newEndTime = endTime.split('')
+            var endHour = newEndTime.splice(0, 2).join('')
+            newEndTime = newEndTime.slice(0, 3)
+
+
+            var startFinal = ''
+            var endFinal = ''
+            if (Number(startHour) > 12) {
+              var t1 = Number(startHour) - 12
+              startFinal = t1 + newStartTime.join('') + 'PM'
             } else {
-              final = hour + newTime.join('') + 'am'
+              startFinal = startHour + newStartTime.join('') + 'AM'
+            }
+            if (Number(endHour) > 12) {
+              var t2 = Number(endHour) - 12
+              endFinal = t2 + newEndTime.join('') + 'PM'
+            } else {
+              endFinal = endHour + newEndTime.join('') + 'AM'
             }
 
             this.setState({
               displayViewModal: !this.state.displayViewModal,
               eventPicked: event,
-              eventTime: final
+              eventTime: startFinal,
+              eventEndTime: endFinal
             }, () => {
               console.log('eventtime is ', this.state.eventTime)
             });
@@ -241,6 +256,7 @@ class BigCalBasic extends React.Component{
           eventTime={this.state.eventTime}
           up={this.state.up}
           eventTime={this.state.eventTime}
+          eventEndTime={this.state.eventEndTime}
           readyToUpdate={this.readyToUpdate.bind(this)}
           readyToUpdateBool={this.state.readyToUpdateBool}
           editingMode={this.editingMode.bind(this)}

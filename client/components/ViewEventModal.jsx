@@ -32,7 +32,8 @@ class ViewEventModal extends React.Component {
 
     this.state = {
       modalIsOpen: true,
-      toggleEdit: false
+      toggleEdit: false,
+      currentMeetingLength: ''
 
     };
 
@@ -118,7 +119,7 @@ class ViewEventModal extends React.Component {
 
           <EditEvent
           up={this.props.up}
-          attendees={this.props.eventPicked.attendees.slice()}
+          attendees={this.props.eventPicked.attendees ? this.props.eventPicked.attendees.slice(): []}
           updateEditedContacts={this.props.updateEditedContacts}
           allContacts={this.props.allContacts}
           user={this.props.user}
@@ -128,6 +129,7 @@ class ViewEventModal extends React.Component {
           updateSlotsAndEventInfo={this.props.updateSlotsAndEventInfo}
           editingMode={this.props.editingMode}
           eventTime={this.props.eventTime}
+          eventEndTime={this.props.eventEndTime}
           renderEventsToCalendar = {this.props.renderEventsToCalendar}
           closeViewModal={this.props.closeViewModal}
           readyToUpdate={this.props.readyToUpdate}
