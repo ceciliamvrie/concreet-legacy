@@ -43,8 +43,8 @@ class EditEvent extends React.Component {
       toggleLocation: false,
       toggleMeetLength: false,
       toggleTime: false,
-      dateValue: value,
-      date: this.props.eventPicked.start.toString().split(' ').slice(0, 4).join(' '),
+      dateValue: this.props.eventPicked.start.toISOString(),
+      date: this.props.eventPicked.start.toLocaleDateString(),
       formattedValue: '',
       checkAvail: this.props.readyToUpdateBool,
       eventTime: this.props.eventTime
@@ -72,8 +72,7 @@ class EditEvent extends React.Component {
   }
 
   afterOpenModal() {
-    // references are now sync'd and can be accessed.
-    // this.subtitle.style.color = '#f00';
+   
   }
 
   closeModal() {
@@ -95,8 +94,8 @@ class EditEvent extends React.Component {
     e.preventDefault()
 
     var i = e.target.getAttribute('name')
-    console.log('attendees', this.props.eventPicked.attendees)
-    console.log('current selected item', this.props.eventPicked.attendees.splice(i, 1))
+    // console.log('attendees', this.props.eventPicked.attendees)
+    // console.log('current selected item', this.props.eventPicked.attendees.splice(i, 1))
 
     this.setState({
       attendees: this.props.eventPicked.attendees
@@ -147,6 +146,7 @@ class EditEvent extends React.Component {
   }
 
   editDate() {
+
     this.setState({
       toggleDate: !this.state.toggleDate
     })
@@ -191,7 +191,15 @@ class EditEvent extends React.Component {
     var meetingLength = JSON.parse(this.state.meetingLength);
     var meetingTitle = this.props.eventPicked.summary;
     let location = this.props.eventPicked.location;
-    var timeMin = moment(this.state.datePicked, "MM/DD/YYYY");
+
+    if (this.state.datePicked) {
+      console.log('DATE WAS PICKED')
+      var timeMin = moment(this.state.datePicked, "MM/DD/YYYY");
+    } else {
+      console.log('DATE WAS nooooooot PICKED')
+      var timeMin = moment(this.props.eventPicked.start.toLocaleDateString(), "MM/DD/YYYY");
+    }
+    
     var queryInfo = {
       timeMin: timeMin.toISOString(),
       timeMax: timeMin.add('1', 'days').toISOString()
@@ -242,7 +250,6 @@ class EditEvent extends React.Component {
       this.props.editingMode();
       this.props.renderEventsToCalendar();
       this.props.toggleEdit();
-      // this.props.closeViewModal();
 
     })
   }
@@ -328,9 +335,12 @@ class EditEvent extends React.Component {
             <div>
               {this.props.eventPicked.attendees ?
                 <Columns columns="2">
-                  {this.props.eventPicked.attendees.map((atnd, i) =>
-                    <div id="attendee"><i className="fa fa-minus-circle fa-fw" id="minusDelete" aria-hidden="true" onClick={this.removeAttendee.bind(this)} name={i}></i>
-                    {atnd.email}: <label style={{fontStyle: 'italic', fontSize: '14px'}}>{atnd.responseStatus}</label></div>
+                  {this.props.eventPicked.attendees.map((atnd, i) => {
+                    if (atnd.email !== this.props.user.user.emailAddress) {
+                        return <div id="attendee"><i className="fa fa-minus-circle fa-fw" id="minusDelete" aria-hidden="true" onClick={this.removeAttendee.bind(this)} name={i}></i>
+                        {atnd.email}: <label style={{fontStyle: 'italic', fontSize: '14px'}}>{atnd.responseStatus}</label></div>
+                      }
+                    }
                   )}
                 </Columns>
               : null}
