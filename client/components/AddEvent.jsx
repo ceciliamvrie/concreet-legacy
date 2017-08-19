@@ -19,13 +19,12 @@ class AddEvent extends React.Component {
 
   handleIt() {
     console.log('first')
-    this.props.topCreateSelected()
     this.props.closeModal()
 
   }
- 
+
   handleClick() {
-    console.log('second')
+
     this.setState({
       topCreateSelected: !this.state.topCreateSelected
     })
