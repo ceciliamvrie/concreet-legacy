@@ -184,9 +184,9 @@ class BigCalBasic extends React.Component{
             var final = ''
             if (Number(hour) > 12) {
               var t = Number(hour) - 12
-              final = t + newTime.join('') + 'am'
+              final = t + newTime.join('') + 'pm'
             } else {
-              final = hour + newTime.join('') + 'pm'
+              final = hour + newTime.join('') + 'am'
             }
 
             this.setState({
@@ -240,6 +240,7 @@ class BigCalBasic extends React.Component{
         {this.state.displayViewModal && <ViewEventModal
           eventTime={this.state.eventTime}
           up={this.state.up}
+          eventTime={this.state.eventTime}
           readyToUpdate={this.readyToUpdate.bind(this)}
           readyToUpdateBool={this.state.readyToUpdateBool}
           editingMode={this.editingMode.bind(this)}

@@ -46,11 +46,13 @@ class TimeSlot extends React.Component {
 		var isoTime = moment(momentTime, 'HH:mm:ss').toISOString().split('T')[1]
 
 		// put together the selectedDate with the selectedTime
+		console.log('selectedDate before', selectedDate)
 		var selectedDateTime = (selectedDate + 'T' + isoTime);
 
+		console.log('SLOT TIME', selectedDateTime)
 		// end time is selectedTime plus meetingLength
 		var endTime = moment(selectedDateTime).add(this.props.meetingLength, 'minutes').toISOString();
-
+		console.log('SLOT TIME END TIME', endTime)
 		this.props.getEventDateTime(selectedDateTime);
 
 		var eventId = this.props.eventId

@@ -34,7 +34,7 @@ class EditEvent extends React.Component {
 
     this.state = {
       modalIsOpen: true,
-      attendees: this.props.eventPicked.attendees,
+      attendees: this.props.attendees,
       datePicked: '',
       meetingLengthTitle: 'Set Meeting Length',
       meetingLength: 30,
@@ -95,11 +95,11 @@ class EditEvent extends React.Component {
     e.preventDefault()
 
     var i = e.target.getAttribute('name')
-    // console.log('attendees', this.props.eventPicked.attendees)
-    // console.log('current selected item', this.props.eventPicked.attendees.splice(i, 1))
+
+    this.state.attendees.splice(i, 1)
 
     this.setState({
-      attendees: this.props.eventPicked.attendees
+      attendees: this.state.attendees
     })
   }
 
@@ -116,24 +116,6 @@ class EditEvent extends React.Component {
   }
 
   editMeetLength() {
-
-    // var time = this.props.eventPicked.start.toString().split(' ').slice(4, 5).join(' ')
-    // var newTime = time.split('')
-    // var hour = newTime.splice(0, 2).join('')
-    // newTime = newTime.slice(0, 3)
-
-    // var final = ''
-    // if (Number(hour) > 12) {
-    //   var t = Number(hour) - 12
-    //   final = t + newTime.join('') + 'am'
-    // } else {
-    //   final = hour + newTime.join('') + 'pm'
-    // }
-    // this.setState({
-    //   eventTime: final
-    // }, () => {
-    //   console.log('eventtime is ', this.state.eventTime)
-    // })
 
     this.setState({
       toggleMeetLength: !this.state.toggleMeetLength
@@ -209,12 +191,12 @@ class EditEvent extends React.Component {
     var contacts = []
     var temp = {}
     // grab unique emails. Right now there are duplicates because of faulty memeber adding process
-    if (this.props.eventPicked.attendees) {
-      for (var i = 0; i < this.props.eventPicked.attendees.length; i++) {
+    if (this.state.attendees) {
+      for (var i = 0; i < this.state.attendees.length; i++) {
         for (var j = 0; j < this.props.allContacts.length; j++) {
 
-          if (this.props.allContacts[j].emailAddress === this.props.eventPicked.attendees[i].email ) {
-            temp[this.props.eventPicked.attendees[i].email] = this.props.allContacts[j] || 'FUDGE'
+          if (this.props.allContacts[j].emailAddress === this.state.attendees[i].email ) {
+            temp[this.state.attendees[i].email] = this.props.allContacts[j] || 'FUDGE'
           }
         }
       }
@@ -247,6 +229,7 @@ class EditEvent extends React.Component {
     var up = this.props.up
 
     CalendarModel.updateEvent(up[0], up[1], this.props.eventPicked.summary, up[3], up[4], this.props.eventPicked.location, up[6], (data) => {
+      this.props.eventPicked.attendees = this.state.attendees;
       this.props.readyToUpdate(false, []);
       this.props.editingMode();
       this.props.renderEventsToCalendar();
@@ -290,7 +273,7 @@ class EditEvent extends React.Component {
                 </h3>
               </div>
             :
-                <FormGroup style={{textAlign: 'center', width: '35%', marginLeft: '32%'}}>
+                <FormGroup style={{textAlign: 'center', width: '35%', marginLeft: '30%'}}>
                   <DatePicker clearButtonElement="" id="datePicker" style={{height: '25px', fontSize: '18px', textAlign: 'center', width: '100%'}}
                    name="date" value={this.state.dateValue} onChange={this.handleDatePicked}/>
                   <button style={{marginTop: '5px', marginBottom: '5px'}} onClick={this.handleDateChange.bind(this)}> Accept </button>
@@ -298,7 +281,7 @@ class EditEvent extends React.Component {
             }
             <div>
             {this.state.toggleMeetLength ?
-              <div style={{marginLeft: '10%'}}>Time Length: {Math.floor(this.state.meetingLength / 60)} Hours   {this.state.meetingLength % 60} Mins
+              <div style={{marginLeft: '31%'}}>Time Length: {Math.floor(this.state.meetingLength / 60)} Hours   {this.state.meetingLength % 60} Mins
                 <h3>
                   <input style={{marginLeft: '8%', width: '28%'}} type="range" name="meetingLength" min="30" max="600" value={this.state.meetingLength} onChange={(e => this.setState({meetingLength: e.target.value, meetingLengthTitle: e.target.value}))}></input>
                 </h3>
@@ -306,7 +289,7 @@ class EditEvent extends React.Component {
               </div>
             :
               <div>
-                <h3 style={{marginLeft: '35%'}}>
+                <h3 style={{marginLeft: '31%'}}>
                   <i onClick={this.editMeetLength.bind(this)} className="fa fa-pencil fa-fw" aria-hidden="true"></i>
                     Set Length: {Math.floor(this.state.meetingLength / 60)} Hours   {this.state.meetingLength % 60} Mins
                 </h3>
@@ -322,13 +305,13 @@ class EditEvent extends React.Component {
               </div>
             :
               <div>
-                <h3 style={{marginLeft: '35%'}}>
+                <h3 style={{marginLeft: '31%'}}>
                   <i onClick={this.editLocation.bind(this)} className="fa fa-pencil fa-fw" aria-hidden="true"></i>
                     {this.props.eventPicked.location || 'No Location For This Event'}
                 </h3>
               </div>
             }
-            <div style={{marginLeft: '35%'}}> {this.props.readyToUpdateBool ? this.props.up[7] + '-' + this.props.up[8]: 'Time Slot'}</div>
+            <div style={{marginLeft: '41%', marginTop: '20px'}}> {this.props.readyToUpdateBool ? this.props.up[7] + '-' + this.props.up[8]: 'Choose a time slot'}</div>
             <button className="createEventButton" style={{marginLeft: '35%', textAlign: 'center'}} onClick={this.toggleAvail.bind(this)}>Check Available Times</button>
 
             </div>
@@ -336,7 +319,7 @@ class EditEvent extends React.Component {
             <div>
               {this.props.eventPicked.attendees ?
                 <Columns columns="2">
-                  {this.props.eventPicked.attendees.map((atnd, i) => {
+                  {this.state.attendees.map((atnd, i) => {
                     if (atnd.email !== this.props.user.user.emailAddress) {
                         return <div id="attendee"><i className="fa fa-minus-circle fa-fw" id="minusDelete" aria-hidden="true" onClick={this.removeAttendee.bind(this)} name={i}></i>
                         {atnd.email}: <label style={{fontStyle: 'italic', fontSize: '14px'}}>{atnd.responseStatus}</label></div>
