@@ -86,6 +86,7 @@ class EditEvent extends React.Component {
     CalendarModel.deleteEventAjax(this.props.eventPicked.id, this.props.user.user, (err, res) => {
       this.props.renderEventsToCalendar();
       this.props.closeViewModal();
+      this.props.editingMode();
     })
   }
 
@@ -235,19 +236,13 @@ class EditEvent extends React.Component {
   update() {
     var up = this.props.up
 
-    if (this.props.readyToUpdateBool) {
-      CalendarModel.updateEvent(up[0], up[1], up[2], up[3], up[4], up[5], up[6], (data) => {
-        this.props.readyToUpdate(false, []);
-        this.props.editingMode();
-        this.props.renderEventsToCalendar();
-        this.props.toggleEdit();
-      })
-    } else {
-      alert('You must pick a meeting time')
-      console.log('error in updating')
-    }
+    CalendarModel.updateEvent(up[0], up[1], up[2], up[3], up[4], up[5], up[6], (data) => {
+      this.props.readyToUpdate(false, []);
+      this.props.editingMode();
+      this.props.renderEventsToCalendar();
+      this.props.toggleEdit();
 
-
+    })
   }
 
   render() {

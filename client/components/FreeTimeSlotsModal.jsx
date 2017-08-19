@@ -38,9 +38,12 @@ class FreeTimeSlotsModal extends React.Component {
 
   closeModal() {
     console.log('closeModal')
-    this.props.readyToUpdate(false)
-    this.props.displayPickDateModal(false)
     this.setState({modalIsOpen: false});
+    this.props.readyToUpdate(false)
+    this.props.displayPickDateModal()
+    if (!this.props.beingEdited) {
+      this.props.closeModal()
+    }
   }
 
   render() {
