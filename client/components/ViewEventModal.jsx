@@ -104,6 +104,7 @@ class ViewEventModal extends React.Component {
           :
 
           <EditEvent
+          up={this.props.up}
           updateEditedContacts={this.props.updateEditedContacts}
           allContacts={this.props.allContacts}
           user={this.props.user}
@@ -116,6 +117,8 @@ class ViewEventModal extends React.Component {
           eventTime={this.props.eventTime}
           renderEventsToCalendar = {this.props.renderEventsToCalendar}
           closeViewModal={this.props.closeViewModal}
+          readyToUpdate={this.props.readyToUpdate}
+          readyToUpdateBool={this.props.readyToUpdateBool}
           />
         }
 
