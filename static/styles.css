@@ -255,9 +255,18 @@ input:-webkit-autofill {
 
 #attendee {
   width: 325px;
+  font-weight: 600;
+  color: rgba(6, 6, 6);
   word-wrap:break-word;
   font-style: bold;
-  font-size: 18px;
+  line-height: 16px;
+  font-size: 16px;
+  margin-left: 30px;
+  text-align: left;
+}
+
+.yomama {
+  text-align: center;
 }
 
 .ReactModal__Overlay {
