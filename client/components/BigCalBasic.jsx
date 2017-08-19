@@ -43,22 +43,6 @@ class BigCalBasic extends React.Component{
     this.renderEventsToCalendar();
   }
 
-
-
-
-  // componentWillMount() {
-  //   // CalendarModel.getCalendarList(this.props.user.user, (currentUser, calendarList) => {
-  //     var calendarList = [];
-  //     CalendarModel.getCalendarEvents(this.props.user.user, calendarList, (eventsList) => {
-  //       CalendarModel.processEvents(eventsList, (processedEvents) => {
-  //         this.setState({
-  //           events: processedEvents,
-  //         })
-  //       })
-  //     })
-  //   // });
-  // }
-
   handleTopCreateSelect() {
     this.setState({
       topCreateSelected: !this.state.topCreateSelected
@@ -66,7 +50,6 @@ class BigCalBasic extends React.Component{
   }
 
   renderEventsToCalendar() {
-    // CalendarModel.getCalendarList(this.props.user.user, (currentUser, calendarList) => {
     var calendarList = [];
       CalendarModel.getCalendarEvents(this.props.user.user, calendarList, (eventsList) => {
         CalendarModel.processEvents(eventsList, (processedEvents) => {
@@ -75,7 +58,6 @@ class BigCalBasic extends React.Component{
           })
         })
       })
-    // });
   }
 
   updateSlotsAndEventInfo(freeSlots, eventDate, eventTitle, eventLength, location, eventId) {
@@ -177,8 +159,6 @@ class BigCalBasic extends React.Component{
           topCreateSelected={this.handleTopCreateSelect.bind(this)}
           closeDisplayModal={this.closeDisplayModal.bind(this)}
           closeModal={this.closeModal.bind(this)}
-          handleFinish={this.props.handleFinish}
-          handleCreateClick={this.props.handleCreateClick}
           user={this.props.user}
           updateSlotsAndEventInfo={this.updateSlotsAndEventInfo.bind(this)}
           selectedContacts={this.props.selectedContacts}
@@ -211,7 +191,7 @@ class BigCalBasic extends React.Component{
             } else {
               final = hour + newTime.join('') + 'pm'
             }
-  
+
             this.setState({
               displayViewModal: !this.state.displayViewModal,
               eventPicked: event,
