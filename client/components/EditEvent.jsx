@@ -260,7 +260,7 @@ class EditEvent extends React.Component {
         >
           <div>
             <div className="modalTitle">
-              <button className="createEventButton" onClick={this.deleteEvent.bind(this)}> Delete this Event (*batman voice* it's garbage ) </button>
+              <button className="createEventButton" onClick={this.deleteEvent.bind(this)}> Delete this Event </button>
             </div>
             {this.state.toggleTitle ?
               <form onSubmit={this.handleTitleChange.bind(this)}>
