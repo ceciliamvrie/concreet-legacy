@@ -51,11 +51,13 @@ class ViewEventModal extends React.Component {
 
   closeModal() {
     this.props.closeViewModal()
+    this.props.editingMode(false)
     this.setState({modalIsOpen: false});
   }
 
   toggleEditEvent() {
     if (this.props.user.user.emailAddress === this.props.eventPicked.creator.email) {
+      this.props.editingMode(true)
       this.setState({
         toggleEdit: !this.state.toggleEdit
       });
@@ -113,7 +115,6 @@ class ViewEventModal extends React.Component {
           user={this.props.user}
           eventTime={this.state.eventTime}
           toggleEdit={this.toggleEditEvent.bind(this)}
-          closeModal={this.closeModal.bind(this)}
           eventPicked={this.props.eventPicked}
           updateSlotsAndEventInfo={this.props.updateSlotsAndEventInfo}
           editingMode={this.props.editingMode}
