@@ -1,7 +1,5 @@
 node_modules/
 
-server/passportConfig.js
-
 config.js
 
 client/gmaps_config.js
